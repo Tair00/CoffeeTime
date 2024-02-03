@@ -5,7 +5,7 @@
     <color name="backCardColor">#FF252A32</color>
     <color name="searchColor">#FF40444A</color>
     <color name="mainColor">#FFD17842</color>
-
+    <color name="smallTextColor">#FFAEAEAE</color>
     <color name="backColor">#FF0C0F14</color>
 
 </resources>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Фоновый рисунок для элемента -->
+    <item>
+        <shape android:shape="rectangle">
+            <!-- Установка цвета фона на 50% черного -->
+            <solid android:color="#80000000"/> <!-- #80 для установки прозрачности -->
+            <!-- Округление углов на верхних 2 углах -->
+            <corners android:topLeftRadius="20dp" android:topRightRadius="20dp"/>
+        </shape>
+    </item>
+
+</selector>
