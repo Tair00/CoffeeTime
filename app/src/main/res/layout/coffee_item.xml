@@ -6,20 +6,21 @@
 
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_margin="40dp"
-
+    android:layout_marginLeft="25dp"
+    android:layout_marginRight="25dp"
+    android:layout_marginTop="35dp"
     android:background="@drawable/coffee_card"
     android:elevation="3dp">
     <!--    xmlns:tools="http://schemas.android.com/tools"-->
 
     <ImageView
-        android:id="@+id/table_cart"
+        android:id="@+id/coffee_cart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="35dp"
-        android:layout_marginTop="65dp"
-        android:layout_marginRight="35dp"
-        android:layout_marginBottom="95dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="85dp"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
         android:transitionName="productImage"
@@ -84,9 +85,8 @@
         android:layout_height="28dp"
         android:layout_margin="8dp"
         android:layout_marginLeft="13dp"
-        android:layout_marginTop="55dp"
+        android:layout_marginTop="85dp"
         android:layout_marginRight="108dp"
-        android:layout_marginBottom="11dp"
         android:layout_weight="0.5"
 
         android:background="@drawable/yellow_btn_background"
@@ -100,10 +100,11 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.854"
+        app:layout_constraintHorizontal_bias="0.873"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/table_cart"
-        app:srcCompat="@drawable/plus"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.866"
+        app:srcCompat="@drawable/plus" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

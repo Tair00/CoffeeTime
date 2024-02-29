@@ -90,13 +90,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="22dp"
-                    android:paddingEnd="22dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.48"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintVertical_bias="0.0"
-
-                   />
+                    app:layout_constraintVertical_bias="0.0" />
 
 
             </LinearLayout>
@@ -122,19 +119,16 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:orientation="horizontal">
 
             <LinearLayout
                 android:id="@+id/homeBtn"
-                android:layout_width="4dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
                 android:layout_weight="0.2"
-                android:orientation="vertical">
+                android:layout_marginTop="15dp"
+                android:orientation="vertical"
+                android:visibility="visible">
 
                 <ImageView
                     android:id="@+id/imageView5"
@@ -152,12 +146,14 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.2"
-                android:orientation="vertical">
+                android:layout_marginTop="15dp"
+                android:orientation="vertical"
+                android:visibility="visible">
 
                 <ImageView
                     android:id="@+id/imageView9"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     app:srcCompat="@drawable/buy_btn" />
 
             </LinearLayout>
@@ -168,12 +164,13 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.2"
                 android:orientation="vertical"
+                android:layout_marginTop="15dp"
                 android:visibility="visible">
 
                 <ImageView
                     android:id="@+id/cart"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
                     app:srcCompat="@drawable/like_btn" />
 
@@ -184,19 +181,20 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.2"
-                android:orientation="vertical">
+                android:layout_marginTop="15dp"
+                android:orientation="vertical"
+                android:visibility="visible">
 
                 <ImageView
                     android:id="@+id/imageView7"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
                     app:srcCompat="@drawable/map_btn" />
 
             </LinearLayout>
 
         </LinearLayout>
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
