@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backCardColor">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="225dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/infoBack"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/black"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/price"
+                        android:layout_width="208dp"
+                        android:layout_height="24dp"
+                        android:layout_marginLeft="60dp"
+                        android:layout_marginEnd="10dp"
+                        android:gravity="center"
+                        android:text="700 руб"
+                        android:textColor="@color/white"
+                        android:textSize="20dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.523"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.283" />
+
+                    <TextView
+                        android:id="@+id/puyText"
+                        android:layout_width="66dp"
+                        android:layout_height="32dp"
+                        android:height="45dp"
+                        android:gravity="center"
+                        android:text="К оплате"
+                        android:textColor="@color/smallTextColor"
+                        android:textSize="12dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.498"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/price"
+                        app:layout_constraintVertical_bias="0.214" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="15dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/descriptionTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:text="Description"
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/outlinedTextField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:hint="Введите номер карты"
+                    android:textColorHint="@color/white"
+                    app:helperText="Обязательно"
+                    app:counterMaxLength="10"
+                    app:helperTextTextColor="@color/mainColor"
+                    app:prefixTextColor="@color/white"
+                    app:boxStrokeColor="@color/white"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="phone"
+                        android:textColor="@color/white"
+                        android:textColorHint="@color/white"
+                        android:maxLength="10"
+                        />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginBottom="45dp">
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/priceBack"
+                        android:layout_width="190dp"
+                        android:layout_height="60dp"
+                       >
+
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/TextMM"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:hint="MM/YY"
+                            android:textColorHint="@color/white"
+                            app:helperText="Обязательно"
+                            app:counterMaxLength="10"
+                            app:helperTextTextColor="@color/mainColor"
+                            app:prefixTextColor="@color/white"
+                            app:boxStrokeColor="@color/white"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="phone"
+                                android:textColor="@color/white"
+                                android:textColorHint="@color/white"
+                                android:maxLength="10"
+                                />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/constraintCVC"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        app:layout_constraintEnd_toEndOf="parent" >
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/TextCVC"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+
+                            android:hint="CVC"
+                            android:textColorHint="@color/white"
+                            app:boxStrokeColor="@color/white"
+                            app:counterMaxLength="10"
+                            app:helperText="Обязательно"
+                            app:helperTextTextColor="@color/mainColor"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:prefixTextColor="@color/white">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="phone"
+                                android:maxLength="10"
+                                android:textColor="@color/white"
+                                android:textColorHint="@color/white" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="180dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginBottom="45dp">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/constraintLayout3"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/text_back"
+                        app:layout_constraintEnd_toEndOf="parent" >
+
+                        <TextView
+                            android:id="@+id/textView9"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Добавить в корзину "
+                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            android:textSize="20dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
