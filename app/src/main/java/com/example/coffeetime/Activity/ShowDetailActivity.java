@@ -57,7 +57,7 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
     private RecyclerView coffeeRecycler;
     private ImageView star;
     private String day;
-    String serverUrl = "https://losermaru.pythonanywhere.com/table";
+    String serverUrl = "https://losermaru.pythonanywhere.com/docs/coffee";
     static ArrayList<CoffeeDomain> coffeeList = new ArrayList<>();
     Float price;
     Integer restaurantId;
@@ -134,7 +134,7 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
     private void sendFavoriteToServer() {
         RequestQueue queue = Volley.newRequestQueue(this);
         String email = getIntent().getStringExtra("email");
-        String userUrl = "https://losermaru.pythonanywhere.com/user/" + email;
+        String userUrl = "https://losermaru.pythonanywhere.com/docs/user/" + email;
         StringRequest userRequest = new StringRequest(Request.Method.GET, userUrl,
                 new Response.Listener<String>() {
                     @Override
@@ -144,7 +144,7 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
                             int userId = userJson.getInt("id");
                             int restaurantId = getIntent().getIntExtra("restorantId", 0);
 
-                            String favoriteUrl = "https://losermaru.pythonanywhere.com/favorite";
+                            String favoriteUrl = "https://losermaru.pythonanywhere.com/docs/favorite";
 
                             JSONObject jsonBody = new JSONObject();
                             jsonBody.put("user_id", userId);
@@ -268,7 +268,7 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
     private void sendRatingToServer(String selectedRating) {
         RequestQueue queue = Volley.newRequestQueue(this);
         String email = getIntent().getStringExtra("email");
-        String userUrl = "https://losermaru.pythonanywhere.com/user/" + email;
+        String userUrl = "https://losermaru.pythonanywhere.com/docs/user/" + email;
 
         StringRequest userRequest = new StringRequest(Request.Method.GET, userUrl,
                 new Response.Listener<String>() {
@@ -279,7 +279,7 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
                             int userId = userJson.optInt("id");
                             int restaurantId = getIntent().getIntExtra("restorantId", 0);
 
-                            String ratingUrl = "https://losermaru.pythonanywhere.com/rating";
+                            String ratingUrl = "https://losermaru.pythonanywhere.com/docs/rating";
 
                             JSONObject jsonBody = new JSONObject();
                             jsonBody.put("rating", Math.round(Float.parseFloat(selectedRating)));
@@ -461,8 +461,6 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
         userNameFragment.setOnUserNameSetListener(this);
         userNameFragment.show(getSupportFragmentManager(), "userNameDialog");
     }
-
-
     public void onUserNameSet(String userName) {
         name = userName;
     }
@@ -471,7 +469,7 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
         RequestQueue queue = Volley.newRequestQueue(this);
         String email = getIntent().getStringExtra("email");
         String restoranPic = getIntent().getStringExtra("restoranPic");
-        String userUrl = "https://losermaru.pythonanywhere.com/user/" + email;
+        String userUrl = "http://losermaru.pythonanywhere.com/docs/user/" + email;
         StringRequest userRequest = new StringRequest(Request.Method.GET, userUrl,
                 new Response.Listener<String>() {
                     @Override
@@ -489,7 +487,7 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
                             jsonBody.put("user_id", userId);
                             jsonBody.put("status", "waiting");
                             jsonBody.put("picture", restoranPic);
-                            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, "https://losermaru.pythonanywhere.com/reservation", jsonBody,
+                            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, "https://losermaru.pythonanywhere.com/docs/reservation", jsonBody,
                                     new Response.Listener<JSONObject>() {
                                         @Override
                                         public void onResponse(JSONObject response) {

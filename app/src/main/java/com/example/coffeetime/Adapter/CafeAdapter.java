@@ -98,6 +98,7 @@ public class CafeAdapter extends RecyclerView.Adapter<CafeAdapter.RestoranViewHo
         TextView productTitles, productPrice;
         TextView grade;
 
+
         public RestoranViewHolder(@NonNull View itemView) {
             super(itemView);
             productImage = itemView.findViewById(R.id.pic);

@@ -70,13 +70,18 @@ public class MainActivity extends AppCompatActivity {
 //        LinearLayout profileBtn = findViewById(R.id.profileBtn);
 //        LinearLayout homeBtn = findViewById(R.id.homeBtn);
         LinearLayout cartBtn = findViewById(R.id.cartBtn);
-//        LinearLayout setting = findViewById(R.id.setting);
-//        setting.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                startActivity(new Intent(MainActivity.this, ProfileActivity.class));
-//            }
-//        });
+        LinearLayout setting = findViewById(R.id.setting);
+        setting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, ReservationActivity.class);
+                String  token = getIntent().getStringExtra("access_token");
+                String email = getIntent().getStringExtra("email");
+                intent.putExtra("email", email);
+                intent.putExtra("access_token", token);
+                startActivity(intent);
+            }
+        });
 //        profileBtn.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {

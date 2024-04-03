@@ -3,6 +3,7 @@ package com.example.coffeetime.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -29,7 +30,6 @@ public class SignUpActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
-
         EditText mail = findViewById(R.id.mail);
         EditText password = findViewById(R.id.password);
         EditText password2 = findViewById(R.id.password2);
@@ -75,7 +75,7 @@ public class SignUpActivity extends AppCompatActivity {
                 connection.disconnect();
                 return responseCode;
             } catch (IOException | JSONException e) {
-                e.printStackTrace();
+                Log.e("SignUpActivity", "Error occurred: " + e.getMessage(), e);
             }
 
             return null;
@@ -104,6 +104,8 @@ public class SignUpActivity extends AppCompatActivity {
             } else {
                 // Обработка ошибки во время выполнения запроса
                 // Например, вывод сообщения об ошибке
+                System.out.println("11111");
+
                 Toast.makeText(SignUpActivity.this, "Ошибка соединения", Toast.LENGTH_SHORT).show();
             }
         }

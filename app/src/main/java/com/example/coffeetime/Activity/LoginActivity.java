@@ -4,6 +4,7 @@ package com.example.coffeetime.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -24,7 +25,8 @@ import retrofit2.Retrofit;
 public class LoginActivity extends AppCompatActivity {
     private Retrofit retrofit;
 
-    String serverUrl = "https://losermaru.pythonanywhere.com/auth";
+    String serverUrl = "https://losermaru.pythonanywhere.com/login/";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,9 +100,11 @@ public class LoginActivity extends AppCompatActivity {
                     this.email = email; // Устанавливаем значение email
                     return true;
                 } else {
+                    Log.i("LoginActivity", "Unsuccessful login attempt with response code: " + responseCode);
                     return false;
                 }
             } catch (IOException | JSONException e) {
+                Log.e("LoginActivity", "Error occurred: " + e.getMessage(), e);
                 e.printStackTrace();
                 return false;
             }
@@ -119,6 +123,7 @@ public class LoginActivity extends AppCompatActivity {
                 // Ошибка аутентификации, выполните соответствующие действия
                 Toast.makeText(LoginActivity.this,
                         "Неправильный логин или пароль", Toast.LENGTH_LONG).show();
+
             }
         }
     }

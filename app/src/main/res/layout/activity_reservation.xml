@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/backColor"
-    tools:context=".Activity.CartActivity" >
+    tools:context=".Activity.ReservationActivity" >
 
 
     <TextView
@@ -28,6 +28,7 @@
 
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="30dp"
         android:background="@drawable/resevation_background"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -57,7 +58,7 @@
             app:layout_constraintVertical_bias="0.357" />
 
         <TextView
-            android:id="@+id/textView6"
+            android:id="@+id/baseReservName"
             android:layout_width="wrap_content"
 
             android:layout_height="wrap_content"
@@ -75,7 +76,7 @@
             app:layout_constraintVertical_bias="0.421" />
 
         <TextView
-            android:id="@+id/textView8"
+            android:id="@+id/baseReservNumber"
             android:layout_width="wrap_content"
 
             android:layout_height="wrap_content"
@@ -97,7 +98,7 @@
             android:text="/в месяц"
             android:textColor="@color/white"
             android:textSize="14dp"
-            app:layout_constraintBottom_toTopOf="@+id/textView8"
+            app:layout_constraintBottom_toTopOf="@+id/baseReservNumber"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/basePrise"
@@ -143,7 +144,7 @@
             app:layout_constraintVertical_bias="0.357" />
 
         <TextView
-            android:id="@+id/textView6"
+            android:id="@+id/standartReservName"
             android:layout_width="wrap_content"
 
             android:layout_height="wrap_content"
@@ -161,7 +162,7 @@
             app:layout_constraintVertical_bias="0.421" />
 
         <TextView
-            android:id="@+id/textView8"
+            android:id="@+id/standartReservNumber"
             android:layout_width="wrap_content"
 
             android:layout_height="wrap_content"
@@ -184,7 +185,7 @@
             android:text="/в месяц"
             android:textColor="@color/white"
             android:textSize="14dp"
-            app:layout_constraintBottom_toTopOf="@+id/textView8"
+            app:layout_constraintBottom_toTopOf="@+id/standartReservNumber"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/standardPrise"
@@ -201,7 +202,7 @@
             android:gravity="center"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.736"
-            app:layout_constraintStart_toEndOf="@+id/textView6"
+            app:layout_constraintStart_toEndOf="@+id/standartReservName"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -231,7 +232,7 @@
             android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.736"
-            app:layout_constraintStart_toEndOf="@+id/textView6"
+            app:layout_constraintStart_toEndOf="@+id/premiumReservName"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -254,7 +255,7 @@
             app:layout_constraintVertical_bias="0.357" />
 
         <TextView
-            android:id="@+id/textView6"
+            android:id="@+id/premiumReservName"
             android:layout_width="wrap_content"
 
             android:layout_height="wrap_content"
@@ -272,7 +273,7 @@
             app:layout_constraintVertical_bias="0.421" />
 
         <TextView
-            android:id="@+id/textView8"
+            android:id="@+id/premiumReservNumber"
             android:layout_width="wrap_content"
 
             android:layout_height="wrap_content"
@@ -295,7 +296,7 @@
             android:text="/в месяц"
             android:textColor="@color/white"
             android:textSize="14dp"
-            app:layout_constraintBottom_toTopOf="@+id/textView8"
+            app:layout_constraintBottom_toTopOf="@+id/premiumReservNumber"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/premiumPrise"

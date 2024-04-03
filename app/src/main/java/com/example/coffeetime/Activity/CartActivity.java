@@ -316,7 +316,7 @@ public class CartActivity extends AppCompatActivity implements ManagementCart.Ca
 
         RequestQueue queue = Volley.newRequestQueue(context);
         System.out.println(" fav3" + favId);
-        String url = "https://losermaru.pythonanywhere.com/favorite/" + favId; // Используем favId для удаления элемента из избранного
+        String url = "https://losermaru.pythonanywhere.com/docs/favorite/" + favId; // Используем favId для удаления элемента из избранного
 
         StringRequest request = new StringRequest(Request.Method.DELETE, url,
                 new Response.Listener<String>() {
