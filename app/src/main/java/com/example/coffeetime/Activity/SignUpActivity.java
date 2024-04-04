@@ -24,7 +24,7 @@ import com.example.coffeetime.R;
 
 public class SignUpActivity extends AppCompatActivity {
 
-    String serverUrl = "https://losermaru.pythonanywhere.com/user";
+    String serverUrl = "https://losermaru.pythonanywhere.com/user/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

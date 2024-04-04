@@ -19,7 +19,7 @@ public interface ApiService {
     Call<List<CafeItem>> getCafe();
 
 
-    @POST("subscription/")
+    @POST("https://losermaru.pythonanywhere.com/subscription/")
     Call<Void> subscribe(
             @Header("Authorization") String token,
             @Body SubscriptionRequest request

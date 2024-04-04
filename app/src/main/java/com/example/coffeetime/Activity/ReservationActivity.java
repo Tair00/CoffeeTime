@@ -34,7 +34,7 @@ public class ReservationActivity extends Activity {
         baseReserv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                quantity = 15; 
+                quantity = 15;
                 goToNextActivity();
             }
         });
@@ -59,6 +59,7 @@ public class ReservationActivity extends Activity {
     private void goToNextActivity() {
         Intent intent = new Intent(ReservationActivity.this, ContactDetailActivity.class);
         intent.putExtra("quantity", quantity); // Передача количества
+        intent.putExtra("access_token", token);
         startActivity(intent);
     }
 }
