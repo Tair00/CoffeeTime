@@ -53,21 +53,6 @@ public class ReservationActivity extends Activity {
 
     private void subscribe(int quantity) {
         SubscriptionRequest request = new SubscriptionRequest(quantity);
-        Call<Void> call = apiService.subscribe("Bearer " + token, request);
-        call.enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                if (response.isSuccessful()) {
-                    // Обработка успешного ответа
-                } else {
-                    // Обработка неуспешного ответа
-                }
-            }
 
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                // Обработка ошибки
-            }
-        });
     }
 }
