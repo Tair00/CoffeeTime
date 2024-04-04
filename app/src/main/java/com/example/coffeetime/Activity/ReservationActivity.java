@@ -1,8 +1,10 @@
 package com.example.coffeetime.Activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
@@ -17,7 +19,7 @@ public class ReservationActivity extends Activity {
     private String token;
     private ApiService apiService;
     ConstraintLayout baseReserv, standardReserv, premiumReserv;
-
+    private int quantity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,27 +34,31 @@ public class ReservationActivity extends Activity {
         baseReserv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                subscribe(15); // Указываем количество
+                quantity = 15; 
+                goToNextActivity();
             }
         });
 
         standardReserv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                subscribe(30); // Указываем количество
+                quantity = 30;
+                goToNextActivity();
             }
         });
 
         premiumReserv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                subscribe(45); // Указываем количество
+                quantity = 45;
+                goToNextActivity();
             }
         });
     }
 
-    private void subscribe(int quantity) {
-        SubscriptionRequest request = new SubscriptionRequest(quantity);
-
+    private void goToNextActivity() {
+        Intent intent = new Intent(ReservationActivity.this, ContactDetailActivity.class);
+        intent.putExtra("quantity", quantity); // Передача количества
+        startActivity(intent);
     }
 }
