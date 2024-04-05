@@ -68,6 +68,11 @@ public class ContactDetailActivity extends Activity {
 
             @Override
             public void onClick(View v) {
+                outlinedTextField.setError(null);
+                textCVC.setError(null);
+                textMM.setError(null);
+
+
                 String inputText = outlinedEditTextField.getText().toString().trim();
                 String inputTextCVC = editTextCVC.getText().toString().trim();
                 String inputTextMM = editTextMM.getText().toString().trim();
