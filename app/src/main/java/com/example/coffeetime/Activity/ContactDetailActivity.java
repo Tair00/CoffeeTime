@@ -18,6 +18,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import com.example.coffeetime.R;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 public class ContactDetailActivity extends Activity {
     private String token;
@@ -25,7 +27,8 @@ public class ContactDetailActivity extends Activity {
     private ApiService apiService;
     TextView priceTextView;
     ConstraintLayout puyBtn;
-
+    TextInputEditText editTextCVC,outlinedEditTextField,editTextMM;
+    TextInputLayout outlinedTextField,textCVC,textMM;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +37,13 @@ public class ContactDetailActivity extends Activity {
         // Инициализация TextView после вызова setContentView()
         priceTextView = findViewById(R.id.price);
         puyBtn = findViewById(R.id.puyBtn);
+        editTextCVC=findViewById(R.id.EditTextCVC);
+        outlinedEditTextField = findViewById(R.id.outlinedEditTextField);
+        editTextMM = findViewById(R.id.EditTextMM);
+
+        outlinedTextField = findViewById(R.id.outlinedTextField);
+        textCVC = findViewById(R.id.TextCVC);
+        textMM = findViewById(R.id.TextMM);
         // Получаем экземпляр ApiService из ApiClient
         apiService = ApiClient.getClient().create(ApiService.class);
 
@@ -55,10 +65,32 @@ public class ContactDetailActivity extends Activity {
 
 
         puyBtn.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
+                String inputText = outlinedEditTextField.getText().toString().trim();
+                String inputTextCVC = editTextCVC.getText().toString().trim();
+                String inputTextMM = editTextMM.getText().toString().trim();
+                System.out.println("123123123123"+ outlinedEditTextField.getText().toString().trim());
+                System.out.println("21111111111 "  + inputText.length());
+                if (inputText.length() == 16 && inputTextCVC.length() == 3 && inputTextMM.length() == 4) {
+                    subscribe(quantity);
 
-                subscribe(quantity);
+
+                } else {
+                    if (inputText.length() != 16) {
+                        outlinedTextField.setError("Неверные данные");
+                    }
+                    if (inputTextCVC.length() != 3) {
+                       textCVC.setError("Неверные данные");
+                    }
+                    if (inputTextMM.length() != 4) {
+                        textMM.setError("Неверные данные");
+                    }
+
+
+                }
+
             }
         });
     }

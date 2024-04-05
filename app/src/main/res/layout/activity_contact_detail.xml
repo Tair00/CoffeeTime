@@ -96,19 +96,20 @@
                     android:hint="Введите номер карты"
                     android:textColorHint="@color/white"
                     app:helperText="Обязательно"
-                    app:counterMaxLength="10"
+                    app:counterMaxLength="16"
                     app:helperTextTextColor="@color/mainColor"
                     app:prefixTextColor="@color/white"
                     app:boxStrokeColor="@color/white"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/outlinedEditTextField"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="phone"
                         android:textColor="@color/white"
                         android:textColorHint="@color/white"
-                        android:maxLength="10"
+                        android:maxLength="16"
                         />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -142,6 +143,7 @@
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
                             <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/EditTextMM"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:inputType="phone"
@@ -180,6 +182,7 @@
                             app:prefixTextColor="@color/white">
 
                             <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/EditTextCVC"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:inputType="phone"
