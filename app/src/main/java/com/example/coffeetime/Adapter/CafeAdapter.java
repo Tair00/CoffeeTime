@@ -29,7 +29,7 @@ public class CafeAdapter extends RecyclerView.Adapter<CafeAdapter.RestoranViewHo
 
     private ArrayList<CafeItem> products;
     private String email,token;
-    private Integer restorantId;
+    private Integer cafe_id;
     public CafeAdapter(Context context, String email,String token ) {
         this.token = token;
         this.context = context;
@@ -78,12 +78,13 @@ public class CafeAdapter extends RecyclerView.Adapter<CafeAdapter.RestoranViewHo
             public void onClick(View view) {
                 ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation((Activity) context,
                         new Pair<View, String>(holder.productImage, "productImage"));
-                restorantId = product.getId();
+                cafe_id = product.getId();
                 Intent intent = new Intent(holder.itemView.getContext(), ShowDetailActivity.class);
                 intent.putExtra("email", email);
                 intent.putExtra("access_token",token);
                 intent.putExtra("object", product);
-                intent.putExtra("id",restorantId);
+                intent.putExtra("cafe_id",cafe_id);
+                System.out.println("1231" + cafe_id +"!!!!");
                 holder.itemView.getContext().startActivity(intent, options.toBundle());
             }
         });

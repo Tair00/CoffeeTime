@@ -83,7 +83,7 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
         token = getIntent().getStringExtra("access_token");
         String feeTxtValue = getIntent().getStringExtra("feeTxt");
         price = 0.0F;
-        restaurantId = getIntent().getIntExtra("restorantId", 0);
+        restaurantId = getIntent().getIntExtra("cafe_id", 0);
         executeGetRequest();
     }
     @Override
@@ -93,7 +93,7 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
     }
     private void getBundle() {
         object = (CafeItem) getIntent().getSerializableExtra("object");
-        int restaurantId = getIntent().getIntExtra("restorantId", 0);
+        int restaurantId = getIntent().getIntExtra("cafe_id", 0);
         if (object == null && restaurantId != 0) {
             fetchRestaurantDetails(restaurantId);
         } else {
@@ -134,66 +134,30 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
 
     private void sendFavoriteToServer() {
         RequestQueue queue = Volley.newRequestQueue(this);
-        String email = getIntent().getStringExtra("email");
-        String userUrl = "https://losermaru.pythonanywhere.com/user/" + email;
-        StringRequest userRequest = new StringRequest(Request.Method.GET, userUrl,
-                new Response.Listener<String>() {
+        int cafe_id = getIntent().getIntExtra("cafe_id", 0);
+        System.out.println("11111111 "+ cafe_id);
+        String favoriteUrl = "https://losermaru.pythonanywhere.com/favorite/";
+
+        JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("cafe_id", cafe_id);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, favoriteUrl, jsonBody,
+                new Response.Listener<JSONObject>() {
                     @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONObject userJson = new JSONObject(response);
-                            int userId = userJson.getInt("id");
-                            int restaurantId = getIntent().getIntExtra("restorantId", 0);
-
-                            String favoriteUrl = "https://losermaru.pythonanywhere.com/favorite/";
-
-                            JSONObject jsonBody = new JSONObject();
-                            jsonBody.put("user_id", userId);
-                            jsonBody.put("restaurant_id", restaurantId);
-
-                            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, favoriteUrl, jsonBody,
-                                    new Response.Listener<JSONObject>() {
-                                        @Override
-                                        public void onResponse(JSONObject response) {
-                                            Toast.makeText(ShowDetailActivity.this, "Добавлено в избранное", Toast.LENGTH_SHORT).show();
-
-                                        }
-                                    },
-                                    new Response.ErrorListener() {
-                                        @Override
-                                        public void onErrorResponse(VolleyError error) {
-                                            String errorMessage = "Ресторан уже добавлен";
-                                            Toast.makeText(ShowDetailActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
-                                            System.out.println("1222222222222Ошибка Volley: " + error.getMessage() + ". " + errorMessage);
-                                        }
-                                    }) {
-                                @Override
-                                public Map<String, String> getHeaders() throws AuthFailureError {
-                                    Map<String, String> headers = new HashMap<>();
-
-                                    String token = getIntent().getStringExtra("access_token");
-                                    headers.put("Authorization", "Bearer " + token);
-                                    return headers;
-                                }
-                            };
-
-                            queue.add(request);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                    public void onResponse(JSONObject response) {
+                        Toast.makeText(ShowDetailActivity.this, "Добавлено в избранное", Toast.LENGTH_SHORT).show();
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        String errorMessage = "Error: " + error.getMessage();
+                        String errorMessage = "Ресторан уже добавлен";
                         Toast.makeText(ShowDetailActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
-                        if (error.networkResponse != null) {
-                            int statusCode = error.networkResponse.statusCode;
-                            String responseData = new String(error.networkResponse.data);
-                            Log.e("ErrorResponse", "Status Code: " + statusCode);
-                            Log.e("ErrorResponse", "Response Data: " + responseData);
-                        }
+                        Log.e("VolleyError", "Error: " + error.getMessage());
                     }
                 }) {
             @Override
@@ -206,8 +170,9 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
             }
         };
 
-        queue.add(userRequest);
+        queue.add(request);
     }
+
     private void showRatingDialog() {
         MaterialRatingBar ratingBar = new MaterialRatingBar(this);
         ratingBar.setNumStars(5); // Установка количества звезд
@@ -278,14 +243,14 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
                         try {
                             JSONObject userJson = new JSONObject(response);
                             int userId = userJson.optInt("id");
-                            int restaurantId = getIntent().getIntExtra("restorantId", 0);
+                            int restaurantId = getIntent().getIntExtra("cafe_id", 0);
 
                             String ratingUrl = "https://losermaru.pythonanywhere.com/rating/";
 
                             JSONObject jsonBody = new JSONObject();
                             jsonBody.put("rating", Math.round(Float.parseFloat(selectedRating)));
                             jsonBody.put("user_id", userId);
-                            jsonBody.put("restaurant_id", restaurantId);
+                            jsonBody.put("cafe_id", restaurantId);
                             updateRating(selectedRating);
                             onResume(selectedRating);
                             JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, ratingUrl, jsonBody,

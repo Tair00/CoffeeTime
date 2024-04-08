@@ -115,10 +115,10 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListViewHolder> {
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 int position = viewHolder.getAdapterPosition();
                 CafeItem deletedItem = products.get(position); // Получаем удаляемый элемент
-                int restaurantId = deletedItem.getId(); // Получаем ID удаляемого ресторана
+                int cafe_id = deletedItem.getId(); // Получаем ID удаляемого ресторана
 
                 // Выполняем DELETE запрос для удаления элемента по ID
-                executeDeleteRequest(restaurantId);
+                executeDeleteRequest(cafe_id);
 
                 // Удаление элемента из списка и уведомление адаптера
                 products.remove(position);

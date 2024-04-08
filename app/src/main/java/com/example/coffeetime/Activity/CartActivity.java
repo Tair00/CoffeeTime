@@ -18,7 +18,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -57,7 +56,7 @@ public class CartActivity extends AppCompatActivity implements ManagementCart.Ca
     private NestedScrollView scrollView;
     private ConstraintLayout orderbtn, profileIcon;
     private ArrayList<CafeItem> orderlist = new ArrayList<>(); // Новый список для ресторанов
-    private List<Integer> restaurantIds = new ArrayList<>();
+    private List<Integer> cafe_ids = new ArrayList<>();
 
     private int userIdFromFirstRequest;
 
@@ -66,7 +65,7 @@ public class CartActivity extends AppCompatActivity implements ManagementCart.Ca
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorites);
         String email = getIntent().getStringExtra("email");
-        executeGetRequest2(email);
+//        executeGetRequest2(email);
         System.out.println("123123123123123123123123" + email);
 //        managementCart = ManagementCart.getInstance(this, this);
         executeGetRequest();
@@ -75,56 +74,56 @@ public class CartActivity extends AppCompatActivity implements ManagementCart.Ca
         fetchRestaurantsFromServer();
     }
 
-    private void executeGetRequest2(String email) {
-        String token = getIntent().getStringExtra("access_token");
-        RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "https://losermaru.pythonanywhere.com/user/" + email;
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            userIdFromFirstRequest = response.getInt("id"); // Сохраняем userId из первого запроса
-                            System.out.println("111111 " + userIdFromFirstRequest);
-                            executeGetRequest(); // Запускаем второй запрос после получения userId
-                        } catch (JSONException e) {
-                            throw new RuntimeException(e);
-                        }
-
-                        // Обработка успешного ответа от сервера
-                    }
-
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // Обработка ошибки запроса первого запроса
-                        handleErrorResponse(error);
-                    }
-                }) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> headers = new HashMap<>();
-                headers.put("Authorization", "Bearer " + token);
-                return headers;
-            }
-        };
-
-        queue.add(request);
-    }
+//    private void executeGetRequest2(String email) {
+//        String token = getIntent().getStringExtra("access_token");
+//        RequestQueue queue = Volley.newRequestQueue(this);
+//        String url = "https://losermaru.pythonanywhere.com/user/" + email;
+//        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
+//                new Response.Listener<JSONObject>() {
+//                    @Override
+//                    public void onResponse(JSONObject response) {
+//                        try {
+//                            userIdFromFirstRequest = response.getInt("id"); // Сохраняем userId из первого запроса
+//                            System.out.println("111111 " + userIdFromFirstRequest);
+//                            executeGetRequest(); // Запускаем второй запрос после получения userId
+//                        } catch (JSONException e) {
+//                            throw new RuntimeException(e);
+//                        }
+//
+//                        // Обработка успешного ответа от сервера
+//                    }
+//
+//                },
+//                new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//                        // Обработка ошибки запроса первого запроса
+//                        handleErrorResponse(error);
+//                    }
+//                }) {
+//            @Override
+//            public Map<String, String> getHeaders() throws AuthFailureError {
+//                Map<String, String> headers = new HashMap<>();
+//                headers.put("Authorization", "Bearer " + token);
+//                return headers;
+//            }
+//        };
+//
+//        queue.add(request);
+//    }
 
 
     private void executeGetRequest() {
         String token = getIntent().getStringExtra("access_token");
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "https://losermaru.pythonanywhere.com/favorite";
+        String url = "https://losermaru.pythonanywhere.com/favorite/";
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
                         System.out.println("1232133123123123123123");
-                        parseResponse(response, userIdFromFirstRequest); // Передаем userId из обоих запросов
+                        parseResponse(response); // Передаем только ответ сервера
                     }
                 },
                 new Response.ErrorListener() {
@@ -142,40 +141,39 @@ public class CartActivity extends AppCompatActivity implements ManagementCart.Ca
         };
 
         queue.add(request);
+
     }
 
-    private void parseResponse(JSONArray response, int userId) {
+    private void parseResponse(JSONArray response) {
         try {
             int length = response.length();
             for (int i = 0; i < length; i++) {
                 JSONObject item = response.getJSONObject(i);
                 int favId = item.getInt("id");
-
                 int itemUserId = item.getInt("user_id");
-                int restaurantId = item.getInt("restaurant_id");
+                int cafe_id = item.getInt("cafe_id");
 
                 System.out.println(" fav                     " + favId);
-                if (itemUserId == userId) {
+
                     System.out.println("userId matches");
-                    restaurantIds.add(restaurantId);
+                    cafe_ids.add(cafe_id);
 
-                    // Создаем объект RestoranDomain и устанавливаем в него favId
-                    CafeItem restoranDomain = new CafeItem();
+                    // Создаем объект CafeItem и устанавливаем в него favId
+                    CafeItem cafeItem = new CafeItem();
                     System.out.println(" fav1                     " + favId);
-                    restoranDomain.setFavId(favId); // Устанавливаем favId
+                    cafeItem.setFavId(favId); // Устанавливаем favId
 
-                    // Добавляем объект RestoranDomain в orderlist
-                    orderlist.add(restoranDomain);
-                } else {
-                    System.out.println("userId does not match");
-                }
+                    // Добавляем объект CafeItem в список orderlist
+                    orderlist.add(cafeItem);
+
             }
-            System.out.println("Restaurant IDs: " + restaurantIds);
+            System.out.println("Restaurant IDs: " + cafe_ids);
         } catch (JSONException e) {
             e.printStackTrace();
             Toast.makeText(CartActivity.this, "Error parsing response", Toast.LENGTH_SHORT).show();
         }
     }
+
 
 
 
@@ -246,7 +244,7 @@ public class CartActivity extends AppCompatActivity implements ManagementCart.Ca
                         // Фильтрация списка restaurants на основе сохраненных айди ресторанов
                         List<CafeItem> filteredRestaurants = new ArrayList<>();
                         for (CafeItem restaurant : restaurants) {
-                            if (restaurantIds.contains(restaurant.getId())) { // Проверяем наличие айди ресторана в списке restaurantIds
+                            if (cafe_ids.contains(restaurant.getId())) { // Проверяем наличие айди ресторана в списке restaurantIds
                                 filteredRestaurants.add(restaurant); // Добавляем только нужные рестораны
                             }
                         }
@@ -330,7 +328,8 @@ public class CartActivity extends AppCompatActivity implements ManagementCart.Ca
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        System.out.println("НЕ УСПЕХ: " + error.toString());
+
+                        System.out.println(favId + "НЕ УСПЕХ: " + error.toString());
                         error.printStackTrace();
                     }
                 }) {
