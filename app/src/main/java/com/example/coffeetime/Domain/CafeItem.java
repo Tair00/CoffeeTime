@@ -15,7 +15,7 @@ public class CafeItem implements Serializable {
     private String image;
     private String description;
     private String address;
-    private Float rating;
+    private Float star;
     private int coffee;
     private int cat_id;
     private String imageUrl;
@@ -78,19 +78,21 @@ public class CafeItem implements Serializable {
     }
 
     public Float getStar() {
-        if (rating != null) {
-            System.out.println("123123123123123123123123 GET");
-            return Math.round(rating * 10.0f) / 10.0f;
+        if (star != null) {
+            System.out.println("123123123123123123123123GETGET GET");
+            return Math.round(star * 10.0f) / 10.0f;
+        }else {
+            System.out.println("not GOOOOOOOOOD");
         }
         return null;
     }
 
-    public void setStar(Float rating) {
-        if (rating != null) {
+    public void setStar(Float star) {
+        if (star != null) {
             System.out.println("123123123123123123123123 SET");
-            this.rating = Math.round(rating * 10.0f) / 10.0f;
+            this.star = Math.round(star * 10.0f) / 10.0f;
         } else {
-            this.rating = null;
+            this.star = null;
         }
     }
 
@@ -110,12 +112,12 @@ public class CafeItem implements Serializable {
         this.id = id;
     }
 
-    public CafeItem(String name, String picture, String description, String address, Float rating, int coffee) {
+    public CafeItem(String name, String picture, String description, String address, Float star, int coffee) {
         this.name = name;
         this.image = picture;
         this.description = description;
         this.address = address;
-        this.rating = rating;
+        this.star = star;
         this.coffee = coffee;
     }
     public CafeItem() {

@@ -102,6 +102,7 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
                 titleTxt.setText(object.getName());
                 description.setText(object.getDescription());
                 starTxt.setText(String.valueOf(object.getStar()));
+                System.out.println("sdasd" + starTxt);
                 Picasso.get().load(object.getPicture()).into(restoranPic);
             }
         }
@@ -144,7 +145,7 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
                             int userId = userJson.getInt("id");
                             int restaurantId = getIntent().getIntExtra("restorantId", 0);
 
-                            String favoriteUrl = "http://losermaru.pythonanywhere.com/favorite/";
+                            String favoriteUrl = "https://losermaru.pythonanywhere.com/favorite/";
 
                             JSONObject jsonBody = new JSONObject();
                             jsonBody.put("user_id", userId);

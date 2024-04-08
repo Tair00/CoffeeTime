@@ -69,8 +69,9 @@ public class CafeAdapter extends RecyclerView.Adapter<CafeAdapter.RestoranViewHo
 
         Picasso.get().load(product.getPicture()).into(holder.productImage);
 
-        String formattedStar = String.format("%.1f", product.getStar());
-        holder.grade.setText(formattedStar);
+        String formattedRating = String.format("%.1f", product.getStar());
+
+        holder.grade.setText(formattedRating);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

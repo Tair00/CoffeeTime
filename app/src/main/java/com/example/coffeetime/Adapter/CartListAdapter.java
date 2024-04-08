@@ -9,10 +9,7 @@ import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
-import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,11 +20,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.bumptech.glide.Glide;
 import com.example.coffeetime.Activity.ShowDetailActivity;
 import com.example.coffeetime.Domain.CafeItem;
 import com.example.coffeetime.R;
-import com.google.android.material.behavior.SwipeDismissBehavior;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
