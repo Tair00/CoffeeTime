@@ -11,12 +11,11 @@ public class CafeItem implements Serializable {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
-
     private String name;
-    private String picture;
+    private String image;
     private String description;
-    private Float price;
-    private Float star;
+    private String address;
+    private Float rating;
     private int coffee;
     private int cat_id;
     private String imageUrl;
@@ -55,11 +54,11 @@ public class CafeItem implements Serializable {
     }
 
     public String getPicture() {
-        return picture;
+        return image;
     }
 
-    public void setPicture(String picture) {
-        this.picture = picture;
+    public void setPicture(String image) {
+        this.image = image;
     }
 
     public String getDescription() {
@@ -70,26 +69,28 @@ public class CafeItem implements Serializable {
         this.description = description;
     }
 
-    public Float getPrice() {
-        return price;
+    public String getPrice() {
+        return address;
     }
 
-    public void setPrice(Float price) {
-        this.price = price;
+    public void setPrice(String address) {
+        this.address = address;
     }
 
     public Float getStar() {
-        if (star != null) {
-            return Math.round(star * 10.0f) / 10.0f;
+        if (rating != null) {
+            System.out.println("123123123123123123123123 GET");
+            return Math.round(rating * 10.0f) / 10.0f;
         }
         return null;
     }
 
-    public void setStar(Float star) {
-        if (star != null) {
-            this.star = Math.round(star * 10.0f) / 10.0f;
+    public void setStar(Float rating) {
+        if (rating != null) {
+            System.out.println("123123123123123123123123 SET");
+            this.rating = Math.round(rating * 10.0f) / 10.0f;
         } else {
-            this.star = null;
+            this.rating = null;
         }
     }
 
@@ -109,12 +110,12 @@ public class CafeItem implements Serializable {
         this.id = id;
     }
 
-    public CafeItem(String name, String picture, String description, Float price, Float star, int coffee) {
+    public CafeItem(String name, String picture, String description, String address, Float rating, int coffee) {
         this.name = name;
-        this.picture = picture;
+        this.image = picture;
         this.description = description;
-        this.price = price;
-        this.star = star;
+        this.address = address;
+        this.rating = rating;
         this.coffee = coffee;
     }
     public CafeItem() {

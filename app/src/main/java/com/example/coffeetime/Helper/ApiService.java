@@ -15,7 +15,7 @@ public interface ApiService {
 
 
 
-    @GET("/restaurant")
+    @GET("/cafe")
     Call<List<CafeItem>> getCafe();
 
 

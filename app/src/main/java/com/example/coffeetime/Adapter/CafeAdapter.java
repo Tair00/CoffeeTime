@@ -82,7 +82,7 @@ public class CafeAdapter extends RecyclerView.Adapter<CafeAdapter.RestoranViewHo
                 intent.putExtra("email", email);
                 intent.putExtra("access_token",token);
                 intent.putExtra("object", product);
-                intent.putExtra("restorantId",restorantId);
+                intent.putExtra("id",restorantId);
                 holder.itemView.getContext().startActivity(intent, options.toBundle());
             }
         });

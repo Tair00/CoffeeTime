@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -111,12 +112,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-
-
-
-
     private void fetchRestaurantsFromServer() {
+        Log.d("MainActivity", "Fetching restaurants from server...");
+
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         httpClient.addInterceptor(new Interceptor() {
             @Override
@@ -142,9 +140,13 @@ public class MainActivity extends AppCompatActivity {
         call.enqueue(new Callback<List<CafeItem>>() {
             @Override
             public void onResponse(Call<List<CafeItem>> call, Response<List<CafeItem>> response) {
+                Log.d("MainActivity", "Server response received.");
+
                 if (response.isSuccessful()) {
                     List<CafeItem> restaurants = response.body();
                     if (restaurants != null) {
+                        Log.d("MainActivity", "Received " + restaurants.size() + " restaurants from server.");
+
                         Collections.sort(restaurants, new Comparator<CafeItem>() {
                             @Override
                             public int compare(CafeItem o1, CafeItem o2) {
@@ -158,16 +160,20 @@ public class MainActivity extends AppCompatActivity {
                         orderlist1.addAll(restaurants);
                         setProductRecycler(orderlist1);
                         priceAdapter.notifyDataSetChanged();
+                    } else {
+                        Log.e("MainActivity", "Received null response body from server.");
                     }
                 } else {
-                    // Обработка ошибки
+                    Log.e("MainActivity", "Server responded with error: " + response.code());
                 }
             }
 
             @Override
             public void onFailure(Call<List<CafeItem>> call, Throwable t) {
-
+                Log.e("MainActivity", "Failed to fetch restaurants from server: " + t.getMessage());
+                t.printStackTrace();
             }
         });
     }
+
 }
