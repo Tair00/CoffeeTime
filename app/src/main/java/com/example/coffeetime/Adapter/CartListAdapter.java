@@ -18,12 +18,18 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.coffeetime.Activity.ShowDetailActivity;
 import com.example.coffeetime.Domain.CafeItem;
+import com.example.coffeetime.Interface.FavIdCallback;
 import com.example.coffeetime.R;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -92,6 +98,7 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListViewHolder> {
                 intent.putExtra("access_token", token);
                 intent.putExtra("object", product);
                 intent.putExtra("restorantId", restorantId);
+
                 holder.itemView.getContext().startActivity(intent, options.toBundle());
             }
         });
@@ -115,10 +122,13 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListViewHolder> {
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 int position = viewHolder.getAdapterPosition();
                 CafeItem deletedItem = products.get(position); // Получаем удаляемый элемент
-                int cafe_id = deletedItem.getId(); // Получаем ID удаляемого ресторана
-
+                int cafe_id = deletedItem.getId();
+                System.out.println("!!!!!!!" + deletedItem.getFavId());// Получаем ID удаляемого ресторана
+                System.out.println(cafe_id);
+                deletedItem.DisplayInfo(deletedItem);
                 // Выполняем DELETE запрос для удаления элемента по ID
-                executeDeleteRequest(cafe_id);
+                getFavIdFromServer(cafe_id);
+
 
                 // Удаление элемента из списка и уведомление адаптера
                 products.remove(position);
@@ -129,10 +139,59 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListViewHolder> {
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(touchHelperCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
     }
+    private void getFavIdFromServer(int cafeId) {
+        System.out.println("запуск");
+        String url = "https://losermaru.pythonanywhere.com/favorite/";
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        try {
+                            // Обработка успешного ответа GET запроса
+                            for (int i = 0; i < response.length(); i++) {
+                                JSONObject cafeObject = response.getJSONObject(i);
+                                int fetchedCafeId = cafeObject.getInt("cafe_id");
+                                int favId = cafeObject.getInt("id");
+                                System.out.println("1232222" + fetchedCafeId);
+                                System.out.println("1232223" + cafeId);
+                                if (fetchedCafeId == cafeId) {
+                                    // cafe_id совпадает с заданным значением
+                                    System.out.println("Cafe ID: " + fetchedCafeId + ", Fav ID: " + favId);
+                                    // Далее можно использовать полученный fav_id
+                                    executeDeleteRequest(favId);
+                                    return;
+                                }else {
+                                    System.out.println("Поплачь");
+                                }
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // Обработка ошибки GET запроса
+                        System.out.println("Не удалось получить список кафе: " + error.toString());
+                    }
+                }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + token);
+                return headers;
+            }
+        };
+
+        queue.add(jsonArrayRequest);
+    }
 
     private void executeDeleteRequest(int favId) {
         String url = "https://losermaru.pythonanywhere.com/favorite/" + favId;
-
+        System.out.println("Test!!!!!" + favId);
         RequestQueue queue = Volley.newRequestQueue(context);
 
         StringRequest stringRequest = new StringRequest(Request.Method.DELETE, url,

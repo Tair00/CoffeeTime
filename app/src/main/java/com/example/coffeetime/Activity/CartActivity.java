@@ -162,7 +162,7 @@ public class CartActivity extends AppCompatActivity implements ManagementCart.Ca
                     CafeItem cafeItem = new CafeItem();
                     System.out.println(" fav1                     " + favId);
                     cafeItem.setFavId(favId); // Устанавливаем favId
-
+                    System.out.println("12222222322222 " +cafeItem.getFavId());
                     // Добавляем объект CafeItem в список orderlist
                     orderlist.add(cafeItem);
 
@@ -297,6 +297,7 @@ public class CartActivity extends AppCompatActivity implements ManagementCart.Ca
         int position = viewHolder.getAdapterPosition();
         CafeItem deletedItem = orderlist.get(position);
         int favId = deletedItem.getFavId();
+        System.out.println(favId + "1231231231231222222");
 //        System.out.println("1231233333" + deletedItem.);
 //        System.out.println("fav id   "+ favId);
         // Получаем favId удаляемого элемента из избранного

@@ -135,7 +135,9 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
     private void sendFavoriteToServer() {
         RequestQueue queue = Volley.newRequestQueue(this);
         int cafe_id = getIntent().getIntExtra("cafe_id", 0);
+
         System.out.println("11111111 "+ cafe_id);
+
         String favoriteUrl = "https://losermaru.pythonanywhere.com/favorite/";
 
         JSONObject jsonBody = new JSONObject();

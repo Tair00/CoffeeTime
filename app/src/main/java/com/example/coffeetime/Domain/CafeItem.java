@@ -10,6 +10,7 @@ public class CafeItem implements Serializable {
 
 
     @PrimaryKey(autoGenerate = true)
+    CafeItem cafeItem;
     private int id;
     private String name;
     private String image;
@@ -112,17 +113,20 @@ public class CafeItem implements Serializable {
         this.id = id;
     }
 
-    public CafeItem(String name, String picture, String description, String address, Float star, int coffee) {
+    public CafeItem(String name, String picture, String description, String address, Float star, int coffee, int favId) {
         this.name = name;
         this.image = picture;
         this.description = description;
         this.address = address;
         this.star = star;
         this.coffee = coffee;
+        this.favId = favId;
     }
     public CafeItem() {
 
     }
-
+    public void DisplayInfo(CafeItem cafeItem){
+        System.out.println(name + " = name " + id+ " = id " + favId + "= favId " + address + " address ");
+    }
 
 }
