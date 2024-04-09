@@ -235,68 +235,37 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
     }
     private void sendRatingToServer(String selectedRating) {
         RequestQueue queue = Volley.newRequestQueue(this);
-        String email = getIntent().getStringExtra("email");
-        String userUrl = "https://losermaru.pythonanywhere.com/user/" + email ;
+        int restaurantId = getIntent().getIntExtra("cafe_id", 0);
 
-        StringRequest userRequest = new StringRequest(Request.Method.GET, userUrl,
-                new Response.Listener<String>() {
+        // Создание URL для отправки рейтинга
+        String ratingUrl = "https://losermaru.pythonanywhere.com/rating/";
+
+        // Получение токена из Intent
+        String token = getIntent().getStringExtra("access_token");
+
+        // Создание JSON тела запроса
+        JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("rating", Math.round(Float.parseFloat(selectedRating)));
+            jsonBody.put("cafe_id", restaurantId); // Передача id ресторана
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        // Создание POST запроса для отправки рейтинга
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, ratingUrl, jsonBody,
+                new Response.Listener<JSONObject>() {
                     @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONObject userJson = new JSONObject(response);
-                            int userId = userJson.optInt("id");
-                            int restaurantId = getIntent().getIntExtra("cafe_id", 0);
-
-                            String ratingUrl = "https://losermaru.pythonanywhere.com/rating/";
-
-                            JSONObject jsonBody = new JSONObject();
-                            jsonBody.put("rating", Math.round(Float.parseFloat(selectedRating)));
-                            jsonBody.put("user_id", userId);
-                            jsonBody.put("cafe_id", restaurantId);
-                            updateRating(selectedRating);
-                            onResume(selectedRating);
-                            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, ratingUrl, jsonBody,
-                                    new Response.Listener<JSONObject>() {
-                                        @Override
-                                        public void onResponse(JSONObject response) {
-//                                            getBundle();
-                                            Toast.makeText(ShowDetailActivity.this, "Спасибо за оценку", Toast.LENGTH_SHORT).show();
-                                        }
-                                    },
-                                    new Response.ErrorListener() {
-                                        @Override
-                                        public void onErrorResponse(VolleyError error) {
-                                            String errorMessage = "Error sending rating: " + error.getMessage();
-                                            Toast.makeText(ShowDetailActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
-                                            if (error.networkResponse != null) {
-                                                int statusCode = error.networkResponse.statusCode;
-                                                String responseData = new String(error.networkResponse.data);
-                                                Log.e("ErrorResponse", "Status Code: " + statusCode);
-                                                Log.e("ErrorResponse", "Response Data: " + responseData);
-                                            }
-                                        }
-                                    }) {
-                                @Override
-                                public Map<String, String> getHeaders() throws AuthFailureError {
-                                    Map<String, String> headers = new HashMap<>();
-
-                                    token = getIntent().getStringExtra("access_token");
-                                    headers.put("Authorization", "Bearer " + token);
-                                    return headers;
-                                }
-                            };
-
-                            queue.add(request);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Toast.makeText(ShowDetailActivity.this, "Error parsing user response", Toast.LENGTH_SHORT).show();
-                        }
+                    public void onResponse(JSONObject response) {
+                        // Обработка успешного ответа
+                        Toast.makeText(ShowDetailActivity.this, "Спасибо за оценку", Toast.LENGTH_SHORT).show();
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        String errorMessage = "Error: " + error.getMessage();
+                        // Обработка ошибки
+                        String errorMessage = "Error sending rating: " + error.getMessage();
                         Toast.makeText(ShowDetailActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
                         if (error.networkResponse != null) {
                             int statusCode = error.networkResponse.statusCode;
@@ -308,16 +277,17 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
                 }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
+                // Передача заголовков, включая токен
                 Map<String, String> headers = new HashMap<>();
-
-                token = getIntent().getStringExtra("access_token");
                 headers.put("Authorization", "Bearer " + token);
                 return headers;
             }
         };
 
-        queue.add(userRequest);
+        // Добавление запроса в очередь
+        queue.add(request);
     }
+
     @Override
     public void onCartUpdated() {
         Toast.makeText(this, "Добавлено в избранное", Toast.LENGTH_SHORT).show();
