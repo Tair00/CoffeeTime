@@ -5,17 +5,17 @@ import java.io.Serializable;
 public class CoffeeDomain implements Serializable {
     private int id;
 
-    private String title;
-    private String seat;
-    private String pic;
-    private String restId;
+    private String name;
+    private String description;
+    private String image;
+    private String cafe_id;
 
-    public String getRestId() {
-        return restId;
+    public String getCafe_id() {
+        return cafe_id;
     }
 
-    public void setRestId(String restId) {
-        this.restId = restId;
+    public void setCafe_id(String cafe_id) {
+        this.cafe_id = cafe_id;
     }
 
     public int getId() {
@@ -26,36 +26,36 @@ public class CoffeeDomain implements Serializable {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getName() {
+        return name;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getSeat() {
-        return seat;
+    public String getDescription() {
+        return description;
     }
 
-    public void setSeat(String desc) {
-        this.seat = desc;
+    public void setDescription(String desc) {
+        this.description = desc;
     }
 
-    public String getPic() {
-        return pic;
+    public String getImage() {
+        return image;
     }
 
-    public void setPic(String pic) {
-        this.pic = pic;
+    public void setImage(String image) {
+        this.image = image;
     }
 
-    public CoffeeDomain(int id, String title, String desc, String restId) {
+    public CoffeeDomain(int id, String name, String description, String cafe_id) {
         this.id = id;
-        this.title = title;
-        this.seat = desc;
-        this.pic = pic;
-        this.restId = restId;
+        this.name = name;
+        this.description = description;
+        this.image = image;
+        this.cafe_id = cafe_id;
 
     }
 }

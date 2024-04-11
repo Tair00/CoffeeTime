@@ -4,15 +4,12 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.example.coffeetime.Domain.CoffeeDomain;
 import com.example.coffeetime.R;
 
@@ -43,8 +40,8 @@ public class CoffeeAdapter extends RecyclerView.Adapter<CoffeeAdapter.TableViewH
     public void onBindViewHolder(@NonNull TableViewHolder holder, int position) {
         CoffeeDomain table = products.get(position);
 
-        holder.coffeeTitles.setText(table.getTitle());
-        holder.coffeePrice.setText(String.valueOf(table.getSeat()));
+        holder.coffeeTitles.setText(table.getName());
+        holder.coffeePrice.setText(String.valueOf(table.getDescription()));
         System.out.println("Task1");
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {

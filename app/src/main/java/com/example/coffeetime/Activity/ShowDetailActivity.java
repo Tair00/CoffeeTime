@@ -309,7 +309,7 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
         coffeeAdapter.setOnItemClickListener(new CoffeeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(CoffeeDomain table) {
-                String number = table.getTitle();
+                String number = table.getName();
                 executePostRequest(number, name);
             }
         });
@@ -380,9 +380,9 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 int id = jsonObject.getInt("id");
-                String title = jsonObject.getString("number");
-                String seat = jsonObject.getString("seat");
-                String restId = jsonObject.getString("restaurant_id");
+                String title = jsonObject.getString("name");
+                String seat = jsonObject.getString("description");
+                String restId = jsonObject.getString("cafe_id");
                 if (restId.equals(String.valueOf(restaurantId))) {
                     coffeeList.add(new CoffeeDomain(id, title, seat, restId));
                 }
