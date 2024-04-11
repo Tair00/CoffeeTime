@@ -380,11 +380,14 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 int id = jsonObject.getInt("id");
+
+                String image = jsonObject.getString("image");
+                System.out.println("+-+-+" + image);
                 String title = jsonObject.getString("name");
                 String seat = jsonObject.getString("description");
                 String restId = jsonObject.getString("cafe_id");
                 if (restId.equals(String.valueOf(restaurantId))) {
-                    coffeeList.add(new CoffeeDomain(id, title, seat, restId));
+                    coffeeList.add(new CoffeeDomain(id, title, seat, restId, image));
                 }
             }
             coffeeAdapter.notifyDataSetChanged();

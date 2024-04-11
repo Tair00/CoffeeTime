@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.coffeetime.Domain.CoffeeDomain;
 import com.example.coffeetime.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -38,17 +39,17 @@ public class CoffeeAdapter extends RecyclerView.Adapter<CoffeeAdapter.TableViewH
 
     @Override
     public void onBindViewHolder(@NonNull TableViewHolder holder, int position) {
-        CoffeeDomain table = products.get(position);
+        CoffeeDomain coffee = products.get(position);
 
-        holder.coffeeTitles.setText(table.getName());
-        holder.coffeePrice.setText(String.valueOf(table.getDescription()));
+        holder.coffeeTitles.setText(coffee.getName());
+        holder.coffeePrice.setText(String.valueOf(coffee.getDescription()));
         System.out.println("Task1");
-
+        Picasso.get().load(coffee.getImage()).into(holder.coffeeImage);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (onItemClickListener != null) {
-                    onItemClickListener.onItemClick(table);
+                    onItemClickListener.onItemClick(coffee);
                 }
             }
         });

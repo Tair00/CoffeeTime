@@ -50,7 +50,7 @@ public class CoffeeDomain implements Serializable {
         this.image = image;
     }
 
-    public CoffeeDomain(int id, String name, String description, String cafe_id) {
+    public CoffeeDomain(int id, String name, String description, String cafe_id,String image) {
         this.id = id;
         this.name = name;
         this.description = description;
