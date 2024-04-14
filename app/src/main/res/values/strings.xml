@@ -6,7 +6,7 @@
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
-
+    <string name="error_empty_name"> Ошибка пустое имя </string>
     <string name="colored_text">Вы можете зарегистрироваться <font color="#FFD17842">здесь</font>!</string>
 
 

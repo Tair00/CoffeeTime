@@ -13,7 +13,7 @@
         android:textColorHint="@color/searchColor"
         android:textColor="@color/searchColor"
         android:padding="16dp"
-        android:hint="Enter your name" />
+        android:hint="Введите своё имя" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/btnSubmit"

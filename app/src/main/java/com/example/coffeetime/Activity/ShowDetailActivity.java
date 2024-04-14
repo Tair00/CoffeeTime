@@ -77,7 +77,7 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
         setupButtonListeners();
         showTimePickerDialog();
         coffeeList.clear();
-        setTableRecycler(coffeeList);
+        setCoffeeRecycler(coffeeList);
         showDatePickerDialog();
         showDialogFragment();
         token = getIntent().getStringExtra("access_token");
@@ -301,7 +301,7 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
         starTxt = findViewById(R.id.starTxt);
     }
 
-    private void setTableRecycler(ArrayList<CoffeeDomain> table) {
+    private void setCoffeeRecycler(ArrayList<CoffeeDomain> table) {
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 2);
         coffeeRecycler = findViewById(R.id.table_recycler);
         coffeeRecycler.setLayoutManager(layoutManager);
@@ -408,67 +408,34 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
 
     private void executePostRequest(String number, String name) {
         RequestQueue queue = Volley.newRequestQueue(this);
-        String email = getIntent().getStringExtra("email");
-        String restoranPic = getIntent().getStringExtra("restoranPic");
-        String userUrl = "http://losermaru.pythonanywhere.com/user/" + email + "/";
-        StringRequest userRequest = new StringRequest(Request.Method.GET, userUrl,
-                new Response.Listener<String>() {
+        System.out.println("123213 " + number +" " + price +" " + restaurantId + " " + name );
+
+        String token = getIntent().getStringExtra("access_token");
+
+        // Создание JSON тела запроса
+        JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("coffee_id", number);
+            jsonBody.put("price", price);
+            jsonBody.put("cafe_id", restaurantId);
+            jsonBody.put("status", "waiting");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        // Создание POST запроса для отправки данных бронирования
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, "https://losermaru.pythonanywhere.com/orders/", jsonBody,
+                new Response.Listener<JSONObject>() {
                     @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONObject userJson = new JSONObject(response);
-                            int userId = userJson.getInt("id");
-                            JSONObject jsonBody = new JSONObject();
-                            jsonBody.put("day", day);
-                            jsonBody.put("time", time);
-                            jsonBody.put("number", number);
-                            jsonBody.put("name", name);
-                            jsonBody.put("price", price);
-                            jsonBody.put("restaurant_id", restaurantId);
-                            jsonBody.put("user_id", userId);
-                            jsonBody.put("status", "waiting");
-                            jsonBody.put("picture", restoranPic);
-                            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, "https://losermaru.pythonanywhere.com/reservation", jsonBody,
-                                    new Response.Listener<JSONObject>() {
-                                        @Override
-                                        public void onResponse(JSONObject response) {
-                                            Toast.makeText(ShowDetailActivity.this, "Запрос отправлен", Toast.LENGTH_SHORT).show();
-//                                            Intent intent1 = new Intent(BookingActivity2.this, MainActivity.class);
-//                                            startActivity(intent1);
-                                        }
-                                    },
-                                    new Response.ErrorListener() {
-                                        @Override
-                                        public void onErrorResponse(VolleyError error) {
-                                            String errorMessage = "Error: " + error.getMessage();
-                                            Toast.makeText(ShowDetailActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
-                                            if (error.networkResponse != null) {
-                                                int statusCode = error.networkResponse.statusCode;
-                                                String responseData = new String(error.networkResponse.data);
-                                                Log.e("ErrorResponse", "Status Code: " + statusCode);
-                                                Log.e("ErrorResponse", "Response Data: " + responseData);
-                                            }
-                                        }
-                                    }) {
-                                @Override
-                                public Map<String, String> getHeaders() throws AuthFailureError {
-                                    Map<String, String> headers = new HashMap<>();
-
-                                    headers.put("Authorization", "Bearer " + token);
-                                    return headers;
-                                }
-                            };
-
-                            queue.add(request);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Toast.makeText(ShowDetailActivity.this, "Error parsing user response", Toast.LENGTH_SHORT).show();
-                        }
+                    public void onResponse(JSONObject response) {
+                        // Обработка успешного ответа
+                        Toast.makeText(ShowDetailActivity.this, "Запрос отправлен", Toast.LENGTH_SHORT).show();
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        // Обработка ошибки
                         String errorMessage = "Error: " + error.getMessage();
                         Toast.makeText(ShowDetailActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
                         if (error.networkResponse != null) {
@@ -481,14 +448,17 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
                 }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
+                // Передача заголовков, включая токен
                 Map<String, String> headers = new HashMap<>();
                 headers.put("Authorization", "Bearer " + token);
                 return headers;
             }
         };
 
-        queue.add(userRequest);
+        // Добавление запроса в очередь
+        queue.add(request);
     }
+
     private void updateDate(int year, int month, int dayOfMonth) {
         DatePickerFragment datePickerFragment = (DatePickerFragment) getSupportFragmentManager().findFragmentByTag("datePicker");
         if (datePickerFragment != null) {

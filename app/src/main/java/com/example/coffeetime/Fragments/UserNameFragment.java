@@ -33,30 +33,28 @@ public class UserNameFragment extends DialogFragment {
         final EditText etUserName = dialogView.findViewById(R.id.etUserName);
         ConstraintLayout btnSubmit = dialogView.findViewById(R.id.btnSubmit);
 
-        btnSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                name = etUserName.getText().toString();
-
-                // Проверяем, что имя пользователя не пустое
-                if (name.isEmpty()) {
-                    etUserName.setError("Впишите свое имя");
-                } else {
-                    // Вызываем метод onUserNameSet из активности или фрагмента,
-                    // передавая имя пользователя
-                    if (onUserNameSetListener != null) {
-                        onUserNameSetListener.onUserNameSet(name);
-                    }
-
-                    dismiss(); // Закрываем фрагмент только при валидном имени
-                }
-            }
-        });
+        btnSubmit.setOnClickListener(v -> onSubmitClicked(etUserName));
 
         builder.setView(dialogView);
-        setCancelable(false); // Запрещаем закрытие фрагмента при нажатии вне диалога
+        setCancelable(false);
 
         return builder.create();
+    }
+
+    private void onSubmitClicked(EditText etUserName) {
+        name = etUserName.getText().toString();
+        if (name.isEmpty()) {
+            etUserName.setError(getString(R.string.error_empty_name));
+        } else {
+            notifyUserNameSet();
+            dismiss();
+        }
+    }
+
+    private void notifyUserNameSet() {
+        if (onUserNameSetListener != null) {
+            onUserNameSetListener.onUserNameSet(name);
+        }
     }
 
     public void setOnUserNameSetListener(OnUserNameSetListener listener) {

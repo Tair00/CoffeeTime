@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
+import androidx.appcompat.widget.SearchView;
+
 
 import com.example.coffeetime.Adapter.CafeAdapter;
 import com.example.coffeetime.Domain.CafeItem;
@@ -44,12 +46,40 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        SearchView searchView = findViewById(R.id.searchView);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                // Можете реализовать необходимую логику при нажатии на Enter
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                // Вызов метода для фильтрации списка при изменении текста
+                filterList(newText);
+                return true;
+            }
+        });
         bottomNavigation();
         fullOrderlist.clear();
         setProductRecycler(orderlist1);
         token = getIntent().getStringExtra("access_token");
         fetchRestaurantsFromServer();
     }
+    private void filterList(String query) {
+        ArrayList<CafeItem> filteredList = new ArrayList<>();
+        for (CafeItem item : orderlist1) {
+            // Здесь вы можете выполнить фильтрацию по вашим критериям
+            // Например, поиск по имени, описанию и т.д.
+            if (item.getName().toLowerCase().contains(query.toLowerCase())) {
+                filteredList.add(item);
+            }
+        }
+        // Обновление адаптера с отфильтрованным списком
+        priceAdapter.updateProducts(filteredList);
+    }
+
     @Override
     protected void onResume() {
         super.onResume();

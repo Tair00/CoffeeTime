@@ -28,8 +28,8 @@
                 android:layout_height="wrap_content">
 
 
-                <EditText
-                    android:id="@+id/editTextTextPersonName"
+                <androidx.appcompat.widget.SearchView
+                    android:id="@+id/searchView"
                     android:layout_width="300dp"
                     android:layout_height="50dp"
                     android:background="@drawable/searche_background"
@@ -38,7 +38,7 @@
                     android:ems="10"
                     android:hint="Поиск"
                     android:inputType="textPersonName"
-                    android:paddingStart="20sp"
+                    android:paddingStart="10sp"
                     android:textColorHint="@color/searchColor"
                     android:textColor="@color/searchColor"
                     android:textSize="24sp"
