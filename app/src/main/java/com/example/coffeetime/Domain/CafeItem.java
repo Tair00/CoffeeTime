@@ -125,6 +125,15 @@ public class CafeItem implements Serializable {
     public CafeItem() {
 
     }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     public void DisplayInfo(CafeItem cafeItem){
         System.out.println(name + " = name " + id+ " = id " + favId + "= favId " + address + " address ");
     }

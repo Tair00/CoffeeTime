@@ -70,15 +70,16 @@ public class MainActivity extends AppCompatActivity {
     private void filterList(String query) {
         ArrayList<CafeItem> filteredList = new ArrayList<>();
         for (CafeItem item : orderlist1) {
-            // Здесь вы можете выполнить фильтрацию по вашим критериям
-            // Например, поиск по имени, описанию и т.д.
-            if (item.getName().toLowerCase().contains(query.toLowerCase())) {
+            // Проверяем, содержится ли текст запроса в имени или адресе элемента списка
+            if (item.getName().toLowerCase().contains(query.toLowerCase()) ||
+                    item.getAddress().toLowerCase().contains(query.toLowerCase())) {
                 filteredList.add(item);
             }
         }
         // Обновление адаптера с отфильтрованным списком
         priceAdapter.updateProducts(filteredList);
     }
+
 
     @Override
     protected void onResume() {

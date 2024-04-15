@@ -63,13 +63,13 @@
 
     <TextView
         android:id="@+id/fee"
-        android:layout_width="105dp"
-        android:layout_height="37dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="Title2"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
         android:textStyle="bold"
-
+        android:maxLines="2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.075"
