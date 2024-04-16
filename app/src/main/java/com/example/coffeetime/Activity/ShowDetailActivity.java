@@ -109,6 +109,7 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
     }
     private void updateRating(String newRating) {
         // Обновляем текстовое поле с оценкой новым значением
+
         starTxt.setText(String.valueOf(newRating));
     }
     private void fetchRestaurantDetails(int restaurantId) {
@@ -257,6 +258,7 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
+                        onResume(selectedRating);
                         // Обработка успешного ответа
                         Toast.makeText(ShowDetailActivity.this, "Спасибо за оценку", Toast.LENGTH_SHORT).show();
                     }

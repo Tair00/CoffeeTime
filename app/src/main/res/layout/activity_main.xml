@@ -34,10 +34,10 @@
                     android:layout_height="50dp"
                     android:background="@drawable/searche_background"
                     android:drawablePadding="10dp"
-                    android:drawableStart="@drawable/search_icon"
+
                     android:ems="10"
                     android:hint="Поиск"
-                    android:inputType="textPersonName"
+                    android:inputType="text"
                     android:paddingStart="10sp"
                     android:textColorHint="@color/searchColor"
                     android:textColor="@color/searchColor"

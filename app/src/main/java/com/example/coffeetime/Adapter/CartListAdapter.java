@@ -140,7 +140,6 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListViewHolder> {
         itemTouchHelper.attachToRecyclerView(recyclerView);
     }
     private void getFavIdFromServer(int cafeId) {
-        System.out.println("запуск");
         String url = "https://losermaru.pythonanywhere.com/favorite/";
         RequestQueue queue = Volley.newRequestQueue(context);
 
