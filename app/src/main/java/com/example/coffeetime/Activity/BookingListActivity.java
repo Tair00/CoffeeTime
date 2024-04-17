@@ -1,10 +1,33 @@
 package com.example.coffeetime.Activity;
 
 import android.app.Activity;
+import android.os.Bundle;
+import android.util.Log;
+import android.widget.Toast;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.coffeetime.Adapter.BookingListAdapter;
+import com.example.coffeetime.Domain.BookingItem;
+import com.example.coffeetime.R;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class BookingListActivity extends Activity {
     private RecyclerView recyclerView;
@@ -99,7 +122,7 @@ public class BookingListActivity extends Activity {
         }
     }
     private void fetchRestaurantName(int id, BookingItem booking) {
-        String url = "https://losermaru.pythonanywhere.com/restaurant/" + id;
+        String url = "https://losermaru.pythonanywhere.com/orders/" + id;
         RequestQueue queue = Volley.newRequestQueue(this);
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
