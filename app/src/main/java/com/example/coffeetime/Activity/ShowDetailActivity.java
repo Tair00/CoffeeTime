@@ -60,7 +60,7 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
     String serverUrl = "https://losermaru.pythonanywhere.com/coffee/";
     static ArrayList<CoffeeDomain> coffeeList = new ArrayList<>();
     Float price;
-    Integer restaurantId;
+    Integer cafe_id;
     private String name;
     private ManagementCart managementCart;
     private int numberOrder = 1;
@@ -83,7 +83,7 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
         token = getIntent().getStringExtra("access_token");
         String feeTxtValue = getIntent().getStringExtra("feeTxt");
         price = 0.0F;
-        restaurantId = getIntent().getIntExtra("cafe_id", 0);
+        cafe_id = getIntent().getIntExtra("cafe_id", 0);
         executeGetRequest();
     }
     @Override
@@ -312,7 +312,9 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
             @Override
             public void onItemClick(CoffeeDomain table) {
                 String number = table.getName();
-                executePostRequest(number, name);
+                String image = table.getImage();
+                String coffeeDesc = table.getDescription();
+                executePostRequest(number, name,image,coffeeDesc);
             }
         });
         coffeeRecycler.setAdapter(coffeeAdapter);
@@ -388,7 +390,7 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
 
                 JSONObject cafeObject = jsonObject.getJSONObject("cafe");
                 String restId = cafeObject.getString("id");
-                if (restId.equals(String.valueOf(restaurantId))) {
+                if (restId.equals(String.valueOf(cafe_id))) {
                     coffeeList.add(new CoffeeDomain(id, title, seat, restId, image));
                 }
             }
@@ -408,21 +410,23 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
         name = userName;
     }
 
-    private void executePostRequest(String number, String name) {
+    private void executePostRequest(String coffeeName, String name, String image,String coffeeDesc) {
         RequestQueue queue = Volley.newRequestQueue(this);
 
-        String image = getIntent().getStringExtra("restoranPic");
+//        String image = getIntent().getStringExtra("image");
         String token = getIntent().getStringExtra("access_token");
-        System.out.println("123213 " + number + " " + price + " " + restaurantId + " " + name + " " + image);
+
+        System.out.println("123213 " + coffeeName + " " +  " " + cafe_id + " " + name + " " + image + " " );
+        System.out.println(" desc   "+ coffeeDesc + " " + time);
         // Создание JSON тела запроса
         JSONObject jsonBody = new JSONObject();
         try {
-            jsonBody.put("name", name);
-            jsonBody.put("description", description); // добавьте описание по вашему усмотрению
-            jsonBody.put("image", image); // добавьте URL изображения по вашему усмотрению
-            JSONObject cafeObject = new JSONObject();
-            cafeObject.put("name","name" ); // добавьте название вашего кафе
-            jsonBody.put("cafe", cafeObject);
+            JSONObject coffeeObject = new JSONObject();
+            coffeeObject.put("name", coffeeName);
+            coffeeObject.put("cafe_id", cafe_id);
+            jsonBody.put("coffee", coffeeObject);
+            jsonBody.put("pick_up_time", time);
+            jsonBody.put("cafe_id", cafe_id);
         } catch (JSONException e) {
             e.printStackTrace();
         }
