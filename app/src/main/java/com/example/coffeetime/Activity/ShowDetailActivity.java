@@ -382,12 +382,12 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 int id = jsonObject.getInt("id");
-
-                String image = jsonObject.getString("image");
-                System.out.println("+-+-+" + image);
                 String title = jsonObject.getString("name");
                 String seat = jsonObject.getString("description");
-                String restId = jsonObject.getString("cafe_id");
+                String image = jsonObject.getString("image");
+
+                JSONObject cafeObject = jsonObject.getJSONObject("cafe");
+                String restId = cafeObject.getString("id");
                 if (restId.equals(String.valueOf(restaurantId))) {
                     coffeeList.add(new CoffeeDomain(id, title, seat, restId, image));
                 }
@@ -410,17 +410,19 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
 
     private void executePostRequest(String number, String name) {
         RequestQueue queue = Volley.newRequestQueue(this);
-        System.out.println("123213 " + number +" " + price +" " + restaurantId + " " + name );
 
+        String image = getIntent().getStringExtra("restoranPic");
         String token = getIntent().getStringExtra("access_token");
-
+        System.out.println("123213 " + number + " " + price + " " + restaurantId + " " + name + " " + image);
         // Создание JSON тела запроса
         JSONObject jsonBody = new JSONObject();
         try {
-            jsonBody.put("coffee_id", number);
-            jsonBody.put("price", price);
-            jsonBody.put("cafe_id", restaurantId);
-            jsonBody.put("status", "waiting");
+            jsonBody.put("name", name);
+            jsonBody.put("description", description); // добавьте описание по вашему усмотрению
+            jsonBody.put("image", image); // добавьте URL изображения по вашему усмотрению
+            JSONObject cafeObject = new JSONObject();
+            cafeObject.put("name","name" ); // добавьте название вашего кафе
+            jsonBody.put("cafe", cafeObject);
         } catch (JSONException e) {
             e.printStackTrace();
         }
