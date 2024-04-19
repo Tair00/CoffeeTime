@@ -9,7 +9,7 @@ public class CoffeeDomain implements Serializable {
     private String description;
     private String image;
     private String cafe_id;
-
+    private String cafeName;
     public String getCafe_id() {
         return cafe_id;
     }
@@ -50,12 +50,20 @@ public class CoffeeDomain implements Serializable {
         this.image = image;
     }
 
-    public CoffeeDomain(int id, String name, String description, String cafe_id,String image) {
+    public CoffeeDomain(int id, String name, String description, String cafe_id,String image,String cafeName) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.image = image;
         this.cafe_id = cafe_id;
+        this.cafeName = cafeName;
+    }
 
+    public String getCafeName() {
+        return cafeName;
+    }
+
+    public void setCafeName(String cafeName) {
+        this.cafeName = cafeName;
     }
 }

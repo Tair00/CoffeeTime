@@ -314,7 +314,8 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
                 String number = table.getName();
                 String image = table.getImage();
                 String coffeeDesc = table.getDescription();
-                executePostRequest(number, name,image,coffeeDesc);
+                String cafeName = table.getCafeName();
+                executePostRequest(number, name,image,coffeeDesc,cafeName);
             }
         });
         coffeeRecycler.setAdapter(coffeeAdapter);
@@ -389,9 +390,10 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
                 String image = jsonObject.getString("image");
 
                 JSONObject cafeObject = jsonObject.getJSONObject("cafe");
+                String cafeName = cafeObject.getString("name");
                 String restId = cafeObject.getString("id");
                 if (restId.equals(String.valueOf(cafe_id))) {
-                    coffeeList.add(new CoffeeDomain(id, title, seat, restId, image));
+                    coffeeList.add(new CoffeeDomain(id, title, seat, restId, image,cafeName));
                 }
             }
             coffeeAdapter.notifyDataSetChanged();
@@ -410,23 +412,37 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
         name = userName;
     }
 
-    private void executePostRequest(String coffeeName, String name, String image,String coffeeDesc) {
+    private void executePostRequest(String coffeeName, String name, String image, String coffeeDesc, String cafeName) {
         RequestQueue queue = Volley.newRequestQueue(this);
 
 //        String image = getIntent().getStringExtra("image");
         String token = getIntent().getStringExtra("access_token");
 
         System.out.println("123213 " + coffeeName + " " +  " " + cafe_id + " " + name + " " + image + " " );
-        System.out.println(" desc   "+ coffeeDesc + " " + time);
+        System.out.println(" desc   "+ coffeeDesc + " " + time + "cafeName " + cafeName);
         // Создание JSON тела запроса
         JSONObject jsonBody = new JSONObject();
         try {
+
+            JSONObject cafeObject = new JSONObject();
+            cafeObject.put("name", cafeName);
+
+            // Создание объекта для поля "coffee"
             JSONObject coffeeObject = new JSONObject();
             coffeeObject.put("name", coffeeName);
             coffeeObject.put("cafe_id", cafe_id);
+
+            // Добавление всех полей в основной JSON объект
+            jsonBody.put("name", name);
+            jsonBody.put("cafe", cafeObject);
             jsonBody.put("coffee", coffeeObject);
             jsonBody.put("pick_up_time", time);
-            jsonBody.put("cafe_id", cafe_id);
+//            JSONObject coffeeObject = new JSONObject();
+//            coffeeObject.put("name", coffeeName);
+//            coffeeObject.put("cafe_id", cafe_id);
+//            jsonBody.put("coffee", coffeeObject);
+//            jsonBody.put("pick_up_time", time);
+//            jsonBody.put("cafe_id", cafe_id);
         } catch (JSONException e) {
             e.printStackTrace();
         }
