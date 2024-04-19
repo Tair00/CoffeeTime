@@ -39,15 +39,11 @@ public class BookingListActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_booking_list);
-
         recyclerView = findViewById(R.id.view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
         bookingList = new ArrayList<>();
         adapter = new BookingListAdapter(BookingListActivity.this, bookingList);
         recyclerView.setAdapter(adapter);
-
-        // Выполните GET-запрос к серверу для получения данных
         executeGetRequest();
     }
 
@@ -55,7 +51,7 @@ public class BookingListActivity extends Activity {
         String token = getIntent().getStringExtra("access_token"); // Получение значения токена
 
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "https://losermaru.pythonanywhere.com/reservation";
+        String url = "https://losermaru.pythonanywhere.com/orders/";
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {
@@ -89,18 +85,18 @@ public class BookingListActivity extends Activity {
 
             for (int i = 0; i < response.length(); i++) {
                 JSONObject jsonObject = response.getJSONObject(i);
-                Integer id = jsonObject.getInt("restaurant_id");
+                int id = jsonObject.getInt("id");
                 String status = jsonObject.getString("status");
 
                 if ("approved".equals(status)) {
-                    String picture = jsonObject.getString("picture");
-                    String date = jsonObject.getString("day");
-                    String time = jsonObject.getString("time");
-                    String number = jsonObject.getString("number");
-                    String name = jsonObject.getString("name");
-
-                    BookingItem booking = new BookingItem(status, picture, date, time, name, id, number);
-
+                    JSONObject coffeeObject = jsonObject.getJSONObject("coffee");
+                    int restaurantId = coffeeObject.getInt("cafe_id");
+                    String picture = coffeeObject.getString("image");
+                    String date = jsonObject.getString("pick_up_time").substring(0, 10); // Извлекаем только дату
+                    String time = jsonObject.getString("pick_up_time").substring(11, 16); // Извлекаем только время
+                    String name = coffeeObject.getString("name");
+                    System.out.println(restaurantId + " " +picture + " " + date + " " + time + " " + " " + name);
+                    BookingItem booking = new BookingItem(status, picture, date, time, name, restaurantId, null); // Поскольку номер не указан, передаем null
                     if (!bookingList.contains(booking)) {
                         bookingList.add(booking);
                         hasNewApprovedItems = true;
@@ -109,7 +105,6 @@ public class BookingListActivity extends Activity {
                     fetchRestaurantName(id, booking);
                 }
             }
-
             adapter.notifyDataSetChanged();
 
             if (hasNewApprovedItems) {

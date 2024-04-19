@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
         priceAdapter.updateProducts(restorans);
     }
     private void bottomNavigation() {
-//        LinearLayout profileBtn = findViewById(R.id.profileBtn);
+        LinearLayout profileBtn = findViewById(R.id.profileBtn);
 //        LinearLayout homeBtn = findViewById(R.id.homeBtn);
         LinearLayout cartBtn = findViewById(R.id.cartBtn);
         LinearLayout setting = findViewById(R.id.setting);
@@ -114,17 +114,17 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-//        profileBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent1 = new Intent(MainActivity.this, BookingListActivity.class);
-//                String  token = getIntent().getStringExtra("access_token");
-//                String email = getIntent().getStringExtra("email");
-//                intent1.putExtra("email", email);
-//                intent1.putExtra("access_token", token);
-//                startActivity(intent1);
-//            }
-//        });
+        profileBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent1 = new Intent(MainActivity.this, BookingListActivity.class);
+                String  token = getIntent().getStringExtra("access_token");
+                String email = getIntent().getStringExtra("email");
+                intent1.putExtra("email", email);
+                intent1.putExtra("access_token", token);
+                startActivity(intent1);
+            }
+        });
 //        homeBtn.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
