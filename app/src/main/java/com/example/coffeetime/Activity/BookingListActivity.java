@@ -89,20 +89,29 @@ public class BookingListActivity extends Activity {
                 String status = jsonObject.getString("status");
 
                 if ("approved".equals(status)) {
+                    String name = jsonObject.getString("name");
+                    JSONObject cafeObject = jsonObject.getJSONObject("cafe");
+                    int cafeId = cafeObject.getInt("id");
+                    String cafeName = cafeObject.getString("name");
+
                     JSONObject coffeeObject = jsonObject.getJSONObject("coffee");
-                    int restaurantId = coffeeObject.getInt("cafe_id");
-                    String picture = coffeeObject.getString("image");
-                    String date = jsonObject.getString("pick_up_time").substring(0, 10); // Извлекаем только дату
-                    String time = jsonObject.getString("pick_up_time").substring(11, 16); // Извлекаем только время
-                    String name = coffeeObject.getString("name");
-                    System.out.println(restaurantId + " " +picture + " " + date + " " + time + " " + " " + name);
-                    BookingItem booking = new BookingItem(status, picture, date, time, name, restaurantId, null); // Поскольку номер не указан, передаем null
+                    int coffeeId = coffeeObject.getInt("id");
+                    String coffeeName = coffeeObject.getString("name");
+                    String coffeeDescription = coffeeObject.getString("description");
+                    int cafeIdFromCoffee = coffeeObject.getInt("cafe_id");
+                    String coffeeImage = coffeeObject.getString("image");
+
+                    String pickUpTime = jsonObject.getString("pick_up_time").substring(0, 16);
+
+                    System.out.println(id + " " + status + " " + name + " " + cafeId + " " + cafeName + " "
+                            + coffeeId + " " + coffeeName + " " + coffeeDescription + " " + cafeIdFromCoffee
+                            + " " + coffeeImage + " " + pickUpTime);
+
+                    BookingItem booking = new BookingItem(status, coffeeImage, pickUpTime, name, cafeName);
                     if (!bookingList.contains(booking)) {
                         bookingList.add(booking);
                         hasNewApprovedItems = true;
                     }
-
-                    fetchRestaurantName(id, booking);
                 }
             }
             adapter.notifyDataSetChanged();
