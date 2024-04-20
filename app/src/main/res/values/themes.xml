@@ -13,5 +13,12 @@
     </style>
     <style name="DatePickerDialogStyle" parent="Theme.AppCompat.Light.Dialog">
         <item name="colorAccent">#FFCA42</item> <!-- Specify your desired color here -->
+
+    </style>
+    <style name="ThemeOverlay.Toobar" parent="ThemeOverlay.MaterialComponents.Toolbar.Primary">
+        <!-- Text color -->
+        <item name="android:editTextColor">@color/backCardColor</item>
+        <!-- Hint text color -->
+        <item name="android:textColorHint">@color/backCardColor</item>
     </style>
 </resources>

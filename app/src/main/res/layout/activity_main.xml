@@ -25,30 +25,32 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="60dp">
 
 
                 <androidx.appcompat.widget.SearchView
                     android:id="@+id/searchView"
-                    android:layout_width="300dp"
+                    android:layout_width="match_parent"
                     android:layout_height="50dp"
+                    android:layout_margin="20dp"
                     android:background="@drawable/searche_background"
                     android:drawablePadding="10dp"
-
                     android:ems="10"
                     android:hint="Поиск"
                     android:inputType="text"
                     android:paddingStart="10sp"
-                    android:textColorHint="@color/searchColor"
-                    android:textColor="@color/searchColor"
+
                     android:textSize="24sp"
                     android:layout_marginTop="80dp"
+                    android:theme="@style/ThemeOverlay.Toobar"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.495"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="1.0" />
+
 
                 <!--                <ImageView-->
                 <!--                    android:id="@+id/moon"-->
