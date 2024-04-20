@@ -101,7 +101,8 @@ public class BookingListActivity extends Activity {
                     int cafeIdFromCoffee = coffeeObject.getInt("cafe_id");
                     String coffeeImage = coffeeObject.getString("image");
 
-                    String pickUpTime = jsonObject.getString("pick_up_time").substring(0, 16);
+                    String pickUpTime = jsonObject.getString("pick_up_time").substring(0, 16).replace('T', ' ');
+
 
                     System.out.println(id + " " + status + " " + name + " " + cafeId + " " + cafeName + " "
                             + coffeeId + " " + coffeeName + " " + coffeeDescription + " " + cafeIdFromCoffee
