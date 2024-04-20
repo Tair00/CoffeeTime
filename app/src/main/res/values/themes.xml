@@ -15,9 +15,9 @@
         <item name="colorAccent">#FFCA42</item> <!-- Specify your desired color here -->
 
     </style>
-    <style name="ThemeOverlay.Toobar" parent="ThemeOverlay.MaterialComponents.Toolbar.Primary">
+    <style name="ThemeOverlay.Toobar" parent="ThemeOverlay.MaterialComponents.Toolbar.Surface">
         <!-- Text color -->
-        <item name="android:editTextColor">@color/backCardColor</item>
+        <item name="android:editTextColor">@color/white</item>
         <!-- Hint text color -->
         <item name="android:textColorHint">@color/backCardColor</item>
     </style>

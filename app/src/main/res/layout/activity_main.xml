@@ -39,11 +39,11 @@
                     android:ems="10"
                     android:hint="Поиск"
                     android:inputType="text"
-                    android:paddingStart="10sp"
+                    android:paddingStart="8sp"
 
                     android:textSize="24sp"
                     android:layout_marginTop="80dp"
-                    android:theme="@style/ThemeOverlay.Toobar"
+                    android:theme="@style/ThemeOverlay.AppCompat.Dark"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.495"

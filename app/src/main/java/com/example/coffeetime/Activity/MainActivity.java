@@ -1,16 +1,13 @@
 package com.example.coffeetime.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import androidx.appcompat.widget.SearchView;
 
@@ -50,11 +47,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         SearchView searchView = findViewById(R.id.searchView);
-        int searchIconId = getResources().getIdentifier("search_button", "id", getPackageName());
-        ImageView searchIcon = (ImageView) searchView.findViewById(searchIconId);
-        int color = ContextCompat.getColor(this, R.color.backColor);
-// Установите цвет иконки
-        searchIcon.setColorFilter(color);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
