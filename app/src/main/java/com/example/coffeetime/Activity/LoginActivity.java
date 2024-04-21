@@ -6,6 +6,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,6 +29,7 @@ public class LoginActivity extends AppCompatActivity {
 
     String serverUrl = "https://losermaru.pythonanywhere.com/login/";
 
+    private boolean isLoading = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,12 +51,19 @@ public class LoginActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = mail.getText().toString();
-                String userPassword = password.getText().toString();
 
-                new LoginAsyncTask().execute(email, userPassword);
+                    // Получаем анимацию из XML
+                    Animation animation = AnimationUtils.loadAnimation(LoginActivity.this, R.anim.scale_up_down);
+
+                    // Применяем анимацию к кнопке
+                    button.startAnimation(animation);
+                    String email = mail.getText().toString();
+                    String userPassword = password.getText().toString();
+                    new LoginAsyncTask().execute(email, userPassword);
+
             }
         });
+
     }
 
     private class LoginAsyncTask extends AsyncTask<String, Void, Boolean> {
@@ -113,6 +123,7 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Boolean success) {
             if (success) {
+                isLoading = false;
                 // Аутентификация прошла успешно, отправляем данные email и переходим на MainActivity
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 intent.putExtra("access_token", token);

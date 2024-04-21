@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -68,6 +70,11 @@ public class ContactDetailActivity extends Activity {
 
             @Override
             public void onClick(View v) {
+                // Получаем анимацию из XML
+                Animation animation = AnimationUtils.loadAnimation(ContactDetailActivity.this, R.anim.scale_up_down);
+
+                // Применяем анимацию к кнопке
+                puyBtn.startAnimation(animation);
                 outlinedTextField.setError(null);
                 textCVC.setError(null);
                 textMM.setError(null);
