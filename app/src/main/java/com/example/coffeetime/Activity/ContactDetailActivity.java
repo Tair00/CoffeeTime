@@ -14,6 +14,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.coffeetime.Helper.ApiClient;
 import com.example.coffeetime.Helper.ApiService;
+import com.example.coffeetime.Helper.FirebaseHelper;
 import com.example.coffeetime.Helper.SubscriptionRequest;
 import com.example.coffeetime.R;
 import retrofit2.Call;
@@ -28,6 +29,7 @@ public class ContactDetailActivity extends Activity {
     private int quantity;
     private ApiService apiService;
     TextView priceTextView;
+    private FirebaseHelper firebaseHelper;
     ConstraintLayout puyBtn;
     TextInputEditText editTextCVC,outlinedEditTextField,editTextMM;
     TextInputLayout outlinedTextField,textCVC,textMM;
@@ -35,7 +37,8 @@ public class ContactDetailActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_detail);
-
+        firebaseHelper = new FirebaseHelper(this);
+        firebaseHelper.initFirebaseMessaging();
         // Инициализация TextView после вызова setContentView()
         priceTextView = findViewById(R.id.price);
         puyBtn = findViewById(R.id.puyBtn);

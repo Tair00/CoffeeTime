@@ -10,6 +10,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.coffeetime.Helper.ApiClient;
 import com.example.coffeetime.Helper.ApiService;
+import com.example.coffeetime.Helper.FirebaseHelper;
 import com.example.coffeetime.Helper.SubscriptionRequest;
 import com.example.coffeetime.R;
 import retrofit2.Call;
@@ -20,6 +21,7 @@ public class ReservationActivity extends Activity {
     private ApiService apiService;
     ConstraintLayout baseReserv, standardReserv, premiumReserv;
     private int quantity;
+    private FirebaseHelper firebaseHelper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,7 +30,8 @@ public class ReservationActivity extends Activity {
         baseReserv = findViewById(R.id.baseReserv);
         standardReserv = findViewById(R.id.standardReserv);
         premiumReserv = findViewById(R.id.premiumReserv);
-
+        firebaseHelper = new FirebaseHelper(this);
+        firebaseHelper.initFirebaseMessaging();
         apiService = ApiClient.getClient().create(ApiService.class);
 
         baseReserv.setOnClickListener(new View.OnClickListener() {

@@ -37,6 +37,7 @@ import com.example.coffeetime.Adapter.CoffeeAdapter;
 import com.example.coffeetime.Domain.CafeItem;
 import com.example.coffeetime.Domain.CoffeeDomain;
 import com.example.coffeetime.Fragments.DatePickerFragment;
+import com.example.coffeetime.Helper.FirebaseHelper;
 import com.example.coffeetime.Helper.ManagementCart;
 import com.example.coffeetime.Fragments.TimePickerFragment;
 import com.example.coffeetime.Interface.CartListener;
@@ -65,11 +66,14 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
     private ManagementCart managementCart;
     private int numberOrder = 1;
     private String token;
+    private FirebaseHelper firebaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_detail);
+        firebaseHelper = new FirebaseHelper(this);
+        firebaseHelper.initFirebaseMessaging();
         initView();
         getBundle();
         CartActivity cartActivity = new CartActivity();

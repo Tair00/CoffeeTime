@@ -1,21 +1,32 @@
 package com.example.coffeetime.Activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
+
 import androidx.appcompat.widget.SearchView;
 
 
 import com.example.coffeetime.Adapter.CafeAdapter;
 import com.example.coffeetime.Domain.CafeItem;
 import com.example.coffeetime.Helper.ApiService;
+import com.example.coffeetime.Helper.FirebaseHelper;
 import com.example.coffeetime.R;
+import com.example.coffeetime.notificasion.PushService;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -35,13 +46,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainActivity extends AppCompatActivity {
     private RecyclerView.Adapter adapter, adapter2;
     private RecyclerView recyclerViewCategoryList, recyclerViewPopularList, productRecycler;
-
     static ArrayList<CafeItem> orderlist1 = new ArrayList<>();
     static ArrayList<CafeItem> fullOrderlist = new ArrayList<>();
-
     static CafeAdapter priceAdapter;
     private String token;
-
+    private BroadcastReceiver pushBroadcastReceiver;
+    private FirebaseHelper firebaseHelper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +76,23 @@ public class MainActivity extends AppCompatActivity {
         setProductRecycler(orderlist1);
         token = getIntent().getStringExtra("access_token");
         fetchRestaurantsFromServer();
+        // Инициализация Firebase Messaging
+        firebaseHelper = new FirebaseHelper(this);
+        firebaseHelper.initFirebaseMessaging();
+
+
+
+    }
+    @Override
+    protected void onDestroy() {
+        // Отмена регистрации приемника уведомлений
+        firebaseHelper.unregisterPushReceiver();
+        super.onDestroy();
+    }
+
+    private String getToken() {
+        String token = getIntent().getStringExtra("access_token");
+        return token != null ? token : "";
     }
     private void filterList(String query) {
         ArrayList<CafeItem> filteredList = new ArrayList<>();
@@ -79,8 +106,6 @@ public class MainActivity extends AppCompatActivity {
         // Обновление адаптера с отфильтрованным списком
         priceAdapter.updateProducts(filteredList);
     }
-
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -206,5 +231,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
 
 }

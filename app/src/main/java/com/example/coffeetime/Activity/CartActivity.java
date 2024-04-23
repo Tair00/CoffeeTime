@@ -42,6 +42,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import com.example.coffeetime.Adapter.CartListAdapter;
 import com.example.coffeetime.Domain.CafeItem;
 import com.example.coffeetime.Helper.ApiService;
+import com.example.coffeetime.Helper.FirebaseHelper;
 import com.example.coffeetime.Helper.ManagementCart;
 import com.example.coffeetime.R;
 
@@ -53,6 +54,7 @@ public class CartActivity extends AppCompatActivity implements ManagementCart.Ca
     private String token;
     private CartListAdapter cartListAdapter;
     private double tax;
+    private FirebaseHelper firebaseHelper;
     private NestedScrollView scrollView;
     private ConstraintLayout orderbtn, profileIcon;
     private ArrayList<CafeItem> orderlist = new ArrayList<>(); // Новый список для ресторанов
@@ -65,6 +67,8 @@ public class CartActivity extends AppCompatActivity implements ManagementCart.Ca
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorites);
         String email = getIntent().getStringExtra("email");
+        firebaseHelper = new FirebaseHelper(this);
+        firebaseHelper.initFirebaseMessaging();
 //        executeGetRequest2(email);
         System.out.println("123123123123123123123123" + email);
 //        managementCart = ManagementCart.getInstance(this, this);

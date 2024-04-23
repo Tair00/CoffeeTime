@@ -18,6 +18,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.coffeetime.Adapter.BookingListAdapter;
 import com.example.coffeetime.Domain.BookingItem;
+import com.example.coffeetime.Helper.FirebaseHelper;
 import com.example.coffeetime.R;
 
 import org.json.JSONArray;
@@ -33,7 +34,7 @@ public class BookingListActivity extends Activity {
     private RecyclerView recyclerView;
     private BookingListAdapter adapter;
     private List<BookingItem> bookingList;
-
+    private FirebaseHelper firebaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +46,8 @@ public class BookingListActivity extends Activity {
         adapter = new BookingListAdapter(BookingListActivity.this, bookingList);
         recyclerView.setAdapter(adapter);
         executeGetRequest();
+        firebaseHelper = new FirebaseHelper(this);
+        firebaseHelper.initFirebaseMessaging();
     }
 
     private void executeGetRequest() {
