@@ -14,9 +14,12 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 import android.app.AlertDialog;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
@@ -26,13 +29,16 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+
 import com.example.coffeetime.Adapter.CoffeeAdapter;
 import com.example.coffeetime.Domain.CafeItem;
 import com.example.coffeetime.Domain.CoffeeDomain;
@@ -41,14 +47,19 @@ import com.example.coffeetime.Helper.FirebaseHelper;
 import com.example.coffeetime.Helper.ManagementCart;
 import com.example.coffeetime.Fragments.TimePickerFragment;
 import com.example.coffeetime.Interface.CartListener;
+import com.example.coffeetime.Interface.TokenCallback;
 import com.example.coffeetime.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.squareup.picasso.Picasso;
+
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
+
 import com.example.coffeetime.Fragments.UserNameFragment;
 
 
-
-public class ShowDetailActivity extends AppCompatActivity implements CartListener, UserNameFragment.OnUserNameSetListener{
+public class ShowDetailActivity extends AppCompatActivity implements CartListener, UserNameFragment.OnUserNameSetListener {
 
     private TextView titleTxt, feeTxt, description, starTxt, coffeeTxt;
     private ImageView heart, restoranPic;
@@ -67,6 +78,7 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
     private int numberOrder = 1;
     private String token;
     private FirebaseHelper firebaseHelper;
+    private String your_smartphone_key_here;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,11 +102,13 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
         cafe_id = getIntent().getIntExtra("cafe_id", 0);
         executeGetRequest();
     }
+
     @Override
     public void onResume(String selectedRating) {
         super.onResume();
         updateRating(selectedRating);
     }
+
     private void getBundle() {
         object = (CafeItem) getIntent().getSerializableExtra("object");
         int restaurantId = getIntent().getIntExtra("cafe_id", 0);
@@ -111,11 +125,13 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
             }
         }
     }
+
     private void updateRating(String newRating) {
         // Обновляем текстовое поле с оценкой новым значением
 
         starTxt.setText(String.valueOf(newRating));
     }
+
     private void fetchRestaurantDetails(int restaurantId) {
 
     }
@@ -141,7 +157,7 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
         RequestQueue queue = Volley.newRequestQueue(this);
         int cafe_id = getIntent().getIntExtra("cafe_id", 0);
 
-        System.out.println("11111111 "+ cafe_id);
+        System.out.println("11111111 " + cafe_id);
 
         String favoriteUrl = "https://losermaru.pythonanywhere.com/favorite/";
 
@@ -238,6 +254,7 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
 
         dialog.show();
     }
+
     private void sendRatingToServer(String selectedRating) {
         RequestQueue queue = Volley.newRequestQueue(this);
         int restaurantId = getIntent().getIntExtra("cafe_id", 0);
@@ -298,8 +315,9 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
     public void onCartUpdated() {
         Toast.makeText(this, "Добавлено в избранное", Toast.LENGTH_SHORT).show();
     }
+
     private void initView() {
-        star=findViewById(R.id.star);
+        star = findViewById(R.id.star);
         heart = findViewById(R.id.heart);
         titleTxt = findViewById(R.id.nameCafe);
         description = findViewById(R.id.descriptionTxt);
@@ -319,13 +337,14 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
                 String image = table.getImage();
                 String coffeeDesc = table.getDescription();
                 String cafeName = table.getCafeName();
-                executePostRequest(number, name,image,coffeeDesc,cafeName);
+                executePostRequest(number, name, image, coffeeDesc, cafeName);
             }
         });
         coffeeRecycler.setAdapter(coffeeAdapter);
         coffeeRecycler.smoothScrollToPosition(0);
         coffeeRecycler.setHasFixedSize(true);
     }
+
     public void showTimePickerDialog() {
         TimePickerFragment newFragment = new TimePickerFragment();
         newFragment.setOnTimeSetListener(new TimePickerFragment.OnTimeSetListener() {
@@ -336,6 +355,7 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
         });
         newFragment.show(getSupportFragmentManager(), "timePicker");
     }
+
     public void showDatePickerDialog() {
         DatePickerFragment newFragment = new DatePickerFragment();
         newFragment.setOnDateSetListener(new DatePickerFragment.OnDateSetListener() {
@@ -369,6 +389,7 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
                 headers.put("Authorization", "Bearer " + token);
                 return headers;
             }
+
             @Override
             protected Response<String> parseNetworkResponse(NetworkResponse response) {
                 int statusCode = response.statusCode;
@@ -397,7 +418,7 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
                 String cafeName = cafeObject.getString("name");
                 String restId = cafeObject.getString("id");
                 if (restId.equals(String.valueOf(cafe_id))) {
-                    coffeeList.add(new CoffeeDomain(id, title, seat, restId, image,cafeName));
+                    coffeeList.add(new CoffeeDomain(id, title, seat, restId, image, cafeName));
                 }
             }
             coffeeAdapter.notifyDataSetChanged();
@@ -412,79 +433,98 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
         userNameFragment.setOnUserNameSetListener(this);
         userNameFragment.show(getSupportFragmentManager(), "userNameDialog");
     }
+
     public void onUserNameSet(String userName) {
         name = userName;
     }
 
     private void executePostRequest(String coffeeName, String name, String image, String coffeeDesc, String cafeName) {
         RequestQueue queue = Volley.newRequestQueue(this);
-
-//        String image = getIntent().getStringExtra("image");
+        // Получение данных из предыдущего активити
         String token = getIntent().getStringExtra("access_token");
-
-        System.out.println("123213 " + coffeeName + " " +  " " + cafe_id + " " + name + " " + image + " " );
-        System.out.println(" desc   "+ coffeeDesc + " " + time + "cafeName " + cafeName);
         // Создание JSON тела запроса
         JSONObject jsonBody = new JSONObject();
-        try {
-
-            JSONObject cafeObject = new JSONObject();
-            cafeObject.put("name", cafeName);
-
-            // Создание объекта для поля "coffee"
-            JSONObject coffeeObject = new JSONObject();
-            coffeeObject.put("name", coffeeName);
-            coffeeObject.put("cafe_id", cafe_id);
-
-            // Добавление всех полей в основной JSON объект
-            jsonBody.put("name", name);
-            jsonBody.put("cafe", cafeObject);
-            jsonBody.put("coffee", coffeeObject);
-            jsonBody.put("pick_up_time", time);
-//            JSONObject coffeeObject = new JSONObject();
-//            coffeeObject.put("name", coffeeName);
-//            coffeeObject.put("cafe_id", cafe_id);
-//            jsonBody.put("coffee", coffeeObject);
-//            jsonBody.put("pick_up_time", time);
-//            jsonBody.put("cafe_id", cafe_id);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        // Создание POST запроса для отправки данных бронирования
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, "https://losermaru.pythonanywhere.com/orders/", jsonBody,
-                new Response.Listener<JSONObject>() {
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
                     @Override
-                    public void onResponse(JSONObject response) {
-                        // Обработка успешного ответа
-                        Toast.makeText(ShowDetailActivity.this, "Запрос отправлен", Toast.LENGTH_SHORT).show();
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // Обработка ошибки
-                        String errorMessage = "Error: " + error.getMessage();
-                        Toast.makeText(ShowDetailActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
-                        if (error.networkResponse != null) {
-                            int statusCode = error.networkResponse.statusCode;
-                            String responseData = new String(error.networkResponse.data);
-                            Log.e("ErrorResponse", "Status Code: " + statusCode);
-                            Log.e("ErrorResponse", "Response Data: " + responseData);
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            // Если не удалось получить токен, обработайте ошибку здесь
+                            return;
                         }
-                    }
-                }) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                // Передача заголовков, включая токен
-                Map<String, String> headers = new HashMap<>();
-                headers.put("Authorization", "Bearer " + token);
-                return headers;
-            }
-        };
+                        // Токен успешно получен
+                        String Mytoken = task.getResult();
+                        // Создание JSON тела запроса
+                        JSONObject jsonBody = new JSONObject();
 
-        // Добавление запроса в очередь
-        queue.add(request);
+                        try {
+                            // Создание объекта для поля "cafe"
+                            JSONObject cafeObject = new JSONObject();
+                            cafeObject.put("name", cafeName);
+                            // Создание объекта для поля "coffee"
+                            JSONObject coffeeObject = new JSONObject();
+                            coffeeObject.put("name", coffeeName);
+                            coffeeObject.put("cafe_id", cafe_id);
+                            // Добавление всех полей в основной JSON объект
+                            jsonBody.put("name", name);
+                            jsonBody.put("cafe", cafeObject);
+                            jsonBody.put("coffee", coffeeObject);
+                            jsonBody.put("pick_up_time", time);
+                            jsonBody.put("smartphone_key", Mytoken); // замените на ваш ключ
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, "https://losermaru.pythonanywhere.com/orders/", jsonBody,
+                                new Response.Listener<JSONObject>() {
+                                    @Override
+                                    public void onResponse(JSONObject response) {
+                                        // Обработка успешного ответа
+                                        Toast.makeText(ShowDetailActivity.this, "Запрос отправлен", Toast.LENGTH_SHORT).show();
+                                    }
+                                },
+                                new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        String errorMessage = "Error: " + error.getMessage();
+                                        Toast.makeText(ShowDetailActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                                        if (error.networkResponse != null) {
+                                            int statusCode = error.networkResponse.statusCode;
+                                            String responseData = new String(error.networkResponse.data);
+                                            Log.e("ErrorResponse", "Status Code: " + statusCode);
+                                            Log.e("ErrorResponse", "Response Data: " + responseData);
+                                        }
+                                    }
+                                }) {
+                            @Override
+                            public Map<String, String> getHeaders() throws AuthFailureError {
+                                Map<String, String> headers = new HashMap<>();
+                                headers.put("Authorization", "Bearer " + token);
+                                return headers;
+                            }
+                        };
+
+                        // Добавление запроса в очередь
+                        queue.add(request);
+                    }
+                });
+    }
+
+    public void getTokenAndSave(final TokenCallback callback) {
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            // Обработка ошибки получения токена
+                            callback.onTokenReceived(null);
+                            return;
+                        }
+                        String Mytoken = task.getResult();
+                        Log.e("TAG", "Token2 -> " + Mytoken);
+                        callback.onTokenReceived(Mytoken);
+                    }
+                });
     }
 
     private void updateDate(int year, int month, int dayOfMonth) {
