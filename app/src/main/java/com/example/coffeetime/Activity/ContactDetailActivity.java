@@ -53,7 +53,6 @@ public class ContactDetailActivity extends Activity {
         apiService = ApiClient.getClient().create(ApiService.class);
 
         quantity = getIntent().getIntExtra("quantity", 0);
-        Toast.makeText(ContactDetailActivity.this, "quantity" + quantity, Toast.LENGTH_SHORT).show();
 
         int price;
 

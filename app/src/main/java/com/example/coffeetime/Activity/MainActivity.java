@@ -202,10 +202,13 @@ public class MainActivity extends AppCompatActivity {
                     List<CafeItem> restaurants = response.body();
                     if (restaurants != null) {
                         Log.d("MainActivity", "Received " + restaurants.size() + " restaurants from server.");
-
+                        for (CafeItem cafe : restaurants) {
+                            Log.d("MainActivity", "cafe_key: " + cafe.getCafe_key());
+                        }
                         Collections.sort(restaurants, new Comparator<CafeItem>() {
                             @Override
                             public int compare(CafeItem o1, CafeItem o2) {
+
                                 // Сравниваем по убыванию рейтинга
                                 return Double.compare(o2.getStar(), o1.getStar());
                             }
@@ -214,6 +217,7 @@ public class MainActivity extends AppCompatActivity {
                         // Устанавливаем данные в RecyclerView после сортировки
                         orderlist1.clear();
                         orderlist1.addAll(restaurants);
+
                         setProductRecycler(orderlist1);
                         priceAdapter.notifyDataSetChanged();
                     } else {

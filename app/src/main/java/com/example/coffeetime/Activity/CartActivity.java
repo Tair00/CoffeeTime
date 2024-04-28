@@ -154,20 +154,18 @@ public class CartActivity extends AppCompatActivity implements ManagementCart.Ca
             for (int i = 0; i < length; i++) {
                 JSONObject item = response.getJSONObject(i);
                 int favId = item.getInt("id");
-                int itemUserId = item.getInt("user_id");
-                int cafe_id = item.getInt("cafe_id");
 
+                int cafe_id = item.getInt("cafe_id");
+                String cafe_key = item.getString("cafe_key");
+                Log.e("TAGcafe_key",cafe_key);
                 System.out.println(" fav                     " + favId);
 
-                    System.out.println("userId matches");
                     cafe_ids.add(cafe_id);
 
-                    // Создаем объект CafeItem и устанавливаем в него favId
                     CafeItem cafeItem = new CafeItem();
                     System.out.println(" fav1                     " + favId);
-                    cafeItem.setFavId(favId); // Устанавливаем favId
+                    cafeItem.setFavId(favId);
                     System.out.println("12222222322222 " +cafeItem.getFavId());
-                    // Добавляем объект CafeItem в список orderlist
                     orderlist.add(cafeItem);
 
             }

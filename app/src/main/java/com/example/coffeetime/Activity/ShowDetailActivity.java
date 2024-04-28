@@ -1,6 +1,8 @@
 package com.example.coffeetime.Activity;
 
+
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -14,12 +16,10 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 import android.app.AlertDialog;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
@@ -29,17 +29,16 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-
 import com.example.coffeetime.Adapter.CoffeeAdapter;
+import com.example.coffeetime.Domain.ApiKeyLoader;
 import com.example.coffeetime.Domain.CafeItem;
 import com.example.coffeetime.Domain.CoffeeDomain;
 import com.example.coffeetime.Fragments.DatePickerFragment;
@@ -47,15 +46,12 @@ import com.example.coffeetime.Helper.FirebaseHelper;
 import com.example.coffeetime.Helper.ManagementCart;
 import com.example.coffeetime.Fragments.TimePickerFragment;
 import com.example.coffeetime.Interface.CartListener;
-import com.example.coffeetime.Interface.TokenCallback;
 import com.example.coffeetime.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.squareup.picasso.Picasso;
-
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
-
 import com.example.coffeetime.Fragments.UserNameFragment;
 
 
@@ -91,10 +87,9 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
         CartActivity cartActivity = new CartActivity();
         managementCart = ManagementCart.getInstance(this, cartActivity);
         setupButtonListeners();
-        showTimePickerDialog();
+
         coffeeList.clear();
         setCoffeeRecycler(coffeeList);
-        showDatePickerDialog();
         showDialogFragment();
         token = getIntent().getStringExtra("access_token");
         String feeTxtValue = getIntent().getStringExtra("feeTxt");
@@ -111,6 +106,7 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
 
     private void getBundle() {
         object = (CafeItem) getIntent().getSerializableExtra("object");
+        Log.e("LOG OBJTOKENKEY",object.getCafe_key());
         int restaurantId = getIntent().getIntExtra("cafe_id", 0);
         if (object == null && restaurantId != 0) {
             fetchRestaurantDetails(restaurantId);
@@ -134,6 +130,57 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
 
     private void fetchRestaurantDetails(int restaurantId) {
 
+    }
+    private void sendNotification(String to, String title, String body, String action, String message) {
+        try {
+            JSONObject notificationBody = new JSONObject();
+            notificationBody.put("title", title);
+            notificationBody.put("body", body);
+
+            JSONObject data = new JSONObject();
+            data.put("action", action);
+            data.put("message", message);
+
+            JSONObject requestBody = new JSONObject();
+            requestBody.put("to", to);
+            requestBody.put("notification", notificationBody);
+            requestBody.put("data", data);
+
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, "https://fcm.googleapis.com/fcm/send", requestBody,
+                    new Response.Listener
+                            <JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            Log.d("TAG", "Уведомление успешно отправлено");
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.e("TAG", "Ошибка при отправке уведомления: " + error.getMessage());
+                        }
+                    }) {
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> headers = new HashMap<>();
+                    String apiKeyLoader = null;
+                    try {
+                        apiKeyLoader = ApiKeyLoader.getApiKey();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    headers.put("Authorization", apiKeyLoader.toString());
+                    headers.put("Content-Type", "application/json");
+                    return headers;
+                }
+            };
+
+
+            RequestQueue queue = Volley.newRequestQueue(this);
+            queue.add(request);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     private void setupButtonListeners() {
@@ -355,18 +402,6 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
         });
         newFragment.show(getSupportFragmentManager(), "timePicker");
     }
-
-    public void showDatePickerDialog() {
-        DatePickerFragment newFragment = new DatePickerFragment();
-        newFragment.setOnDateSetListener(new DatePickerFragment.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                updateDate(year, month, dayOfMonth);
-            }
-        });
-        newFragment.show(getSupportFragmentManager(), "datePicker");
-    }
-
     private void executeGetRequest() {
         RequestQueue queue = Volley.newRequestQueue(this);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, serverUrl,
@@ -415,6 +450,7 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
                 String image = jsonObject.getString("image");
 
                 JSONObject cafeObject = jsonObject.getJSONObject("cafe");
+
                 String cafeName = cafeObject.getString("name");
                 String restId = cafeObject.getString("id");
                 if (restId.equals(String.valueOf(cafe_id))) {
@@ -432,6 +468,7 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
         UserNameFragment userNameFragment = UserNameFragment.newInstance();
         userNameFragment.setOnUserNameSetListener(this);
         userNameFragment.show(getSupportFragmentManager(), "userNameDialog");
+        showDatePickerDialog();
     }
 
     public void onUserNameSet(String userName) {
@@ -456,12 +493,10 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
                         String Mytoken = task.getResult();
                         // Создание JSON тела запроса
                         JSONObject jsonBody = new JSONObject();
-
                         try {
                             // Создание объекта для поля "cafe"
                             JSONObject cafeObject = new JSONObject();
                             cafeObject.put("name", cafeName);
-                            // Создание объекта для поля "coffee"
                             JSONObject coffeeObject = new JSONObject();
                             coffeeObject.put("name", coffeeName);
                             coffeeObject.put("cafe_id", cafe_id);
@@ -469,9 +504,12 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
                             jsonBody.put("name", name);
                             jsonBody.put("cafe", cafeObject);
                             jsonBody.put("coffee", coffeeObject);
-                            jsonBody.put("pick_up_time", time);
+                            System.out.println("TAG_E " + time);
+                            String formattedTime = day +"T" + time + ":00";
+                            Log.e("TAG_TIME",day +"T" + time + ":00" );
+                            jsonBody.put("pick_up_time", formattedTime);
                             jsonBody.put("smartphone_key", Mytoken); // замените на ваш ключ
-
+                            sendNotification(object.getCafe_key(),"У вас новый клиент",coffeeName,"show_message",cafeName);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -487,12 +525,39 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
                                     @Override
                                     public void onErrorResponse(VolleyError error) {
                                         String errorMessage = "Error: " + error.getMessage();
-                                        Toast.makeText(ShowDetailActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
                                         if (error.networkResponse != null) {
                                             int statusCode = error.networkResponse.statusCode;
                                             String responseData = new String(error.networkResponse.data);
                                             Log.e("ErrorResponse", "Status Code: " + statusCode);
                                             Log.e("ErrorResponse", "Response Data: " + responseData);
+                                            try {
+                                                // Парсим JSON-строку
+                                                JSONObject jsonResponse = new JSONObject(responseData);
+                                                // Извлекаем значение поля "message"
+                                                String message = jsonResponse.getString("message");
+                                                // Выводим сообщение на экран или обрабатываем его по своему усмотрению
+                                                System.out.println("Сообщение от сервера: " + message);
+                                                String message1 = "Ошибка. Вы не можете совершать заказы. Пожалуйста, продлите подписку.";
+                                                if (message.equals(message1))
+                                                {
+                                                    Toast.makeText(ShowDetailActivity.this,"Вы не можете совершать заказы. Пожалуйста, продлите подписку.",Toast.LENGTH_SHORT).show();
+                                                    Intent intent = new Intent(ShowDetailActivity.this, ReservationActivity.class);
+                                                    String  token = getIntent().getStringExtra("access_token");
+                                                    String email = getIntent().getStringExtra("email");
+                                                    intent.putExtra("email", email);
+                                                    intent.putExtra("access_token", token);
+                                                    startActivity(intent);
+                                                }else{
+                                                    Toast.makeText(ShowDetailActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                                                }
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+                                            System.out.println(responseData);
+                                            if (responseData.contains("Вы не можете совершать заказы")) {
+                                                // Выводим сообщение "Извините"
+                                                System.out.println("Извините");
+                                            }
                                         }
                                     }
                                 }) {
@@ -509,24 +574,17 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
                     }
                 });
     }
-
-    public void getTokenAndSave(final TokenCallback callback) {
-        FirebaseMessaging.getInstance().getToken()
-                .addOnCompleteListener(new OnCompleteListener<String>() {
-                    @Override
-                    public void onComplete(@NonNull Task<String> task) {
-                        if (!task.isSuccessful()) {
-                            // Обработка ошибки получения токена
-                            callback.onTokenReceived(null);
-                            return;
-                        }
-                        String Mytoken = task.getResult();
-                        Log.e("TAG", "Token2 -> " + Mytoken);
-                        callback.onTokenReceived(Mytoken);
-                    }
-                });
+    public void showDatePickerDialog() {
+        DatePickerFragment newFragment = new DatePickerFragment();
+        newFragment.setOnDateSetListener(new DatePickerFragment.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                updateDate(year, month, dayOfMonth);
+            }
+        });
+        newFragment.show(getSupportFragmentManager(), "datePicker");
+        showTimePickerDialog();
     }
-
     private void updateDate(int year, int month, int dayOfMonth) {
         DatePickerFragment datePickerFragment = (DatePickerFragment) getSupportFragmentManager().findFragmentByTag("datePicker");
         if (datePickerFragment != null) {
@@ -535,7 +593,6 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
         }
         day = String.format(Locale.getDefault(), "%04d-%02d-%02d", year, month + 1, dayOfMonth);
     }
-
     private void updateTime(int hourOfDay, int minute) {
         TimePickerFragment timePickerFragment = (TimePickerFragment) getSupportFragmentManager().findFragmentByTag("timePicker");
         if (timePickerFragment != null) {

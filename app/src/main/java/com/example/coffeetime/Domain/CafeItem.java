@@ -19,6 +19,7 @@ public class CafeItem implements Serializable {
     private Float star;
     private int coffee;
     private int cat_id;
+    private String cafe_key;
     private String imageUrl;
     private int favId; // Добавьте поле для favId
 
@@ -113,13 +114,14 @@ public class CafeItem implements Serializable {
         this.id = id;
     }
 
-    public CafeItem(String name, String picture, String description, String address, Float star, int coffee, int favId) {
+    public CafeItem(String name, String picture, String description, String address, Float star, int coffee, String cafeKey, int favId) {
         this.name = name;
         this.image = picture;
         this.description = description;
         this.address = address;
         this.star = star;
         this.coffee = coffee;
+        this.cafe_key = cafeKey;
         this.favId = favId;
     }
     public CafeItem() {
@@ -138,4 +140,11 @@ public class CafeItem implements Serializable {
         System.out.println(name + " = name " + id+ " = id " + favId + "= favId " + address + " address ");
     }
 
+    public String getCafe_key() {
+        return cafe_key;
+    }
+
+    public void setCafe_key(String cafe_key) {
+        this.cafe_key = cafe_key;
+    }
 }

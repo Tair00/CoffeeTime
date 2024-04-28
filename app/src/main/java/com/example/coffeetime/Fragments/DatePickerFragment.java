@@ -16,7 +16,6 @@ import java.util.Locale;
 
 
 
-
 public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
     private OnDateSetListener onDateSetListener;
     private int selectedYear;

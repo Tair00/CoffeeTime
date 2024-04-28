@@ -35,6 +35,7 @@ public class CafeAdapter extends RecyclerView.Adapter<CafeAdapter.RestoranViewHo
         this.context = context;
         this.products = new ArrayList<>();
         this.email = email;
+
     }
 
     public void updateProducts(ArrayList<CafeItem> newProducts) {
@@ -82,6 +83,7 @@ public class CafeAdapter extends RecyclerView.Adapter<CafeAdapter.RestoranViewHo
                 Intent intent = new Intent(holder.itemView.getContext(), ShowDetailActivity.class);
                 intent.putExtra("email", email);
                 intent.putExtra("access_token",token);
+
                 intent.putExtra("object", product);
                 intent.putExtra("cafe_id",cafe_id);
                 System.out.println("1231" + cafe_id +"!!!!");
