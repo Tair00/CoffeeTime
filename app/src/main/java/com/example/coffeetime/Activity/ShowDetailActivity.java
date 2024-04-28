@@ -518,7 +518,7 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
                                     @Override
                                     public void onResponse(JSONObject response) {
                                         // Обработка успешного ответа
-                                        Toast.makeText(ShowDetailActivity.this, "Запрос отправлен", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(ShowDetailActivity.this, "Ожидайте ответа ", Toast.LENGTH_SHORT).show();
                                     }
                                 },
                                 new Response.ErrorListener() {
