@@ -55,7 +55,7 @@ import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 import com.example.coffeetime.Fragments.UserNameFragment;
 
 
-public class ShowDetailActivity extends AppCompatActivity implements CartListener, UserNameFragment.OnUserNameSetListener {
+public class ShowDetailActivity extends AppCompatActivity implements CartListener {
 
     private TextView titleTxt, feeTxt, description, starTxt, coffeeTxt;
     private ImageView heart, restoranPic;
@@ -76,7 +76,6 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
     private FirebaseHelper firebaseHelper;
     private String your_smartphone_key_here;
 
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_detail);
@@ -90,7 +89,7 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
 
         coffeeList.clear();
         setCoffeeRecycler(coffeeList);
-        showDialogFragment();
+
         token = getIntent().getStringExtra("access_token");
         String feeTxtValue = getIntent().getStringExtra("feeTxt");
         price = 0.0F;
@@ -379,12 +378,13 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
         coffeeAdapter = new CoffeeAdapter(this, table);
         coffeeAdapter.setOnItemClickListener(new CoffeeAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(CoffeeDomain table) {
+            public void onItemClick(CoffeeDomain table, String selectedDate, String selectedTime, String userName) {
                 String number = table.getName();
                 String image = table.getImage();
                 String coffeeDesc = table.getDescription();
                 String cafeName = table.getCafeName();
-                executePostRequest(number, name, image, coffeeDesc, cafeName);
+                Log.e("TAG_LOG_FRAG"," " + selectedDate + " " + selectedTime  + " " + userName);
+                executePostRequest(number, name, image, coffeeDesc, cafeName, selectedDate, selectedTime, userName);
             }
         });
         coffeeRecycler.setAdapter(coffeeAdapter);
@@ -392,16 +392,7 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
         coffeeRecycler.setHasFixedSize(true);
     }
 
-    public void showTimePickerDialog() {
-        TimePickerFragment newFragment = new TimePickerFragment();
-        newFragment.setOnTimeSetListener(new TimePickerFragment.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                updateTime(hourOfDay, minute);
-            }
-        });
-        newFragment.show(getSupportFragmentManager(), "timePicker");
-    }
+
     private void executeGetRequest() {
         RequestQueue queue = Volley.newRequestQueue(this);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, serverUrl,
@@ -464,18 +455,9 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
         }
     }
 
-    private void showDialogFragment() {
-        UserNameFragment userNameFragment = UserNameFragment.newInstance();
-        userNameFragment.setOnUserNameSetListener(this);
-        userNameFragment.show(getSupportFragmentManager(), "userNameDialog");
-        showDatePickerDialog();
-    }
 
-    public void onUserNameSet(String userName) {
-        name = userName;
-    }
 
-    private void executePostRequest(String coffeeName, String name, String image, String coffeeDesc, String cafeName) {
+    private void executePostRequest(String coffeeName, String name, String image, String coffeeDesc, String cafeName, String selectedDate, String selectedTime, String userName) {
         RequestQueue queue = Volley.newRequestQueue(this);
         // Получение данных из предыдущего активити
         String token = getIntent().getStringExtra("access_token");
@@ -501,12 +483,12 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
                             coffeeObject.put("name", coffeeName);
                             coffeeObject.put("cafe_id", cafe_id);
                             // Добавление всех полей в основной JSON объект
-                            jsonBody.put("name", name);
+                            jsonBody.put("name", userName);
                             jsonBody.put("cafe", cafeObject);
                             jsonBody.put("coffee", coffeeObject);
                             System.out.println("TAG_E " + time);
-                            String formattedTime = day +"T" + time + ":00";
-                            Log.e("TAG_TIME",day +"T" + time + ":00" );
+                            String formattedTime = selectedDate +"T" + selectedTime + ":00";
+                            Log.e("TAG_TIME",selectedDate +"T" + selectedTime + ":00" );
                             jsonBody.put("pick_up_time", formattedTime);
                             jsonBody.put("smartphone_key", Mytoken); // замените на ваш ключ
                             sendNotification(object.getCafe_key(),"У вас новый клиент",coffeeName,"show_message",cafeName);
@@ -573,31 +555,5 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
                         queue.add(request);
                     }
                 });
-    }
-    public void showDatePickerDialog() {
-        DatePickerFragment newFragment = new DatePickerFragment();
-        newFragment.setOnDateSetListener(new DatePickerFragment.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                updateDate(year, month, dayOfMonth);
-            }
-        });
-        newFragment.show(getSupportFragmentManager(), "datePicker");
-        showTimePickerDialog();
-    }
-    private void updateDate(int year, int month, int dayOfMonth) {
-        DatePickerFragment datePickerFragment = (DatePickerFragment) getSupportFragmentManager().findFragmentByTag("datePicker");
-        if (datePickerFragment != null) {
-            datePickerFragment.updateDate(year, month, dayOfMonth);
-
-        }
-        day = String.format(Locale.getDefault(), "%04d-%02d-%02d", year, month + 1, dayOfMonth);
-    }
-    private void updateTime(int hourOfDay, int minute) {
-        TimePickerFragment timePickerFragment = (TimePickerFragment) getSupportFragmentManager().findFragmentByTag("timePicker");
-        if (timePickerFragment != null) {
-            timePickerFragment.updateTime(hourOfDay, minute);
-        }
-        time = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute);
     }
 }

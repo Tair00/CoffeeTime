@@ -156,8 +156,7 @@ public class CartActivity extends AppCompatActivity implements ManagementCart.Ca
                 int favId = item.getInt("id");
 
                 int cafe_id = item.getInt("cafe_id");
-                String cafe_key = item.getString("cafe_key");
-                Log.e("TAGcafe_key",cafe_key);
+
                 System.out.println(" fav                     " + favId);
 
                     cafe_ids.add(cafe_id);

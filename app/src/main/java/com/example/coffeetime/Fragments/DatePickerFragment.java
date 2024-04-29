@@ -14,8 +14,6 @@ import com.example.coffeetime.R;
 import java.util.Calendar;
 import java.util.Locale;
 
-
-
 public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
     private OnDateSetListener onDateSetListener;
     private int selectedYear;

@@ -1,21 +1,19 @@
 package com.example.coffeetime.Fragments;
 
-
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.text.format.DateFormat;
-import com.example.coffeetime.R;
 import android.widget.Button;
 import android.widget.TimePicker;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
+import com.example.coffeetime.R;
+
 import java.util.Calendar;
 import java.util.Locale;
-
-
 
 public class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
     private OnTimeSetListener onTimeSetListener;
