@@ -60,6 +60,12 @@ public class UserNameFragment extends DialogFragment {
     public void setOnUserNameSetListener(OnUserNameSetListener listener) {
         this.onUserNameSetListener = listener;
     }
+      public void onUserNameSet(String userName) {
+        if (onUserNameSetListener != null) {
+            onUserNameSetListener.onUserNameSet(userName);
+        }
+        dismiss(); // Закрываем фрагмент после передачи данных
+    }
 
     public interface OnUserNameSetListener {
         void onUserNameSet(String userName);

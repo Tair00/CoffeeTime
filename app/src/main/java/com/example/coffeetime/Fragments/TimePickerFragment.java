@@ -59,7 +59,9 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
 
         return timePickerDialog;
     }
-
+    public static TimePickerFragment newInstance() {
+        return new TimePickerFragment();
+    }
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         // Запомнить выбранное время

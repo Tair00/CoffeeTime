@@ -1,6 +1,8 @@
 package com.example.coffeetime.Activity;
 
 
+import static androidx.core.content.ContentProviderCompat.requireContext;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -53,6 +55,8 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.squareup.picasso.Picasso;
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 import com.example.coffeetime.Fragments.UserNameFragment;
+import androidx.appcompat.app.AppCompatActivity;
+
 
 
 public class ShowDetailActivity extends AppCompatActivity implements CartListener {
@@ -384,9 +388,46 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
                 String coffeeDesc = table.getDescription();
                 String cafeName = table.getCafeName();
                 Log.e("TAG_LOG_FRAG"," " + selectedDate + " " + selectedTime  + " " + userName);
-                executePostRequest(number, name, image, coffeeDesc, cafeName, selectedDate, selectedTime, userName);
-            }
-        });
+                DatePickerFragment datePickerFragment = DatePickerFragment.newInstance();
+
+                // Устанавливаем слушатель для получения даты после закрытия DatePickerFragment
+                datePickerFragment.setOnDateSetListener(new DatePickerFragment.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        String formattedDate = String.format(Locale.getDefault(), "%04d-%02d-%02d", year, month + 1, dayOfMonth);
+                        TimePickerFragment timePickerFragment = TimePickerFragment.newInstance();
+
+                        // Устанавливаем слушатель для получения времени после закрытия TimePickerFragment
+                        timePickerFragment.setOnTimeSetListener(new TimePickerFragment.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                                String formattedTime = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute);
+                                UserNameFragment userNameFragment = UserNameFragment.newInstance();
+
+                                // Устанавливаем слушатель для получения имени пользователя после закрытия UserNameFragment
+                                userNameFragment.setOnUserNameSetListener(new UserNameFragment.OnUserNameSetListener() {
+                                    @Override
+                                    public void onUserNameSet(String userName) {
+                                        // После получения имени пользователя отправляем запрос
+                                        executePostRequest(number, name, image, coffeeDesc, cafeName, formattedDate, formattedTime, userName);
+                                    }
+                                });
+
+                                // Отображаем UserNameFragment
+                                userNameFragment.show(ShowDetailActivity.this.getSupportFragmentManager(), "userNameDialog");
+                            }
+                        });
+
+                        // Отображаем TimePickerFragment
+                        timePickerFragment.show(ShowDetailActivity.this.getSupportFragmentManager(), "timePicker");
+                    }
+                });
+
+                // Отображаем DatePickerFragment
+                datePickerFragment.show(ShowDetailActivity.this.getSupportFragmentManager(), "datePicker");
+            }});
+
+
         coffeeRecycler.setAdapter(coffeeAdapter);
         coffeeRecycler.smoothScrollToPosition(0);
         coffeeRecycler.setHasFixedSize(true);

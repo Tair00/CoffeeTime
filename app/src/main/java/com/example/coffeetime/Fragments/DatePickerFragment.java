@@ -29,7 +29,9 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
     public interface OnDateSetListener {
         void onDateSet(DatePicker view, int year, int month, int day);
     }
-
+    public static DatePickerFragment newInstance() {
+        return new DatePickerFragment();
+    }
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {

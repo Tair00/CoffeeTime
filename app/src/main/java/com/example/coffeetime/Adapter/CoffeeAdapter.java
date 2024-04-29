@@ -64,17 +64,17 @@ public class CoffeeAdapter extends RecyclerView.Adapter<CoffeeAdapter.TableViewH
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DatePickerFragment datePickerFragment = new DatePickerFragment();
-                datePickerFragment.show(((AppCompatActivity) context).getSupportFragmentManager(), "datePicker");
-                datePickerFragment.setOnDateSetListener(new DatePickerFragment.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        updateDate(year, month, dayOfMonth);
-
-                        showTimePickerDialog(); // Передаем адаптер в мето
-
-                    }
-                });
+//                DatePickerFragment datePickerFragment = new DatePickerFragment();
+//                datePickerFragment.show(((AppCompatActivity) context).getSupportFragmentManager(), "datePicker");
+//                datePickerFragment.setOnDateSetListener(new DatePickerFragment.OnDateSetListener() {
+//                    @Override
+//                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+//                        updateDate(year, month, dayOfMonth);
+//
+////                        showTimePickerDialog(); // Передаем адаптер в мето
+//
+//                    }
+//                });
 
                 if (onItemClickListener != null) {
                     onItemClickListener.onItemClick(coffee, selectedDate, selectedTime, userName);
@@ -103,7 +103,7 @@ public class CoffeeAdapter extends RecyclerView.Adapter<CoffeeAdapter.TableViewH
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 updateTime(hourOfDay, minute);
                 selectedTime = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute);
-                showDialogFragment();
+
             }
         });
         newFragment.show(((AppCompatActivity) context).getSupportFragmentManager(), "timePicker");
