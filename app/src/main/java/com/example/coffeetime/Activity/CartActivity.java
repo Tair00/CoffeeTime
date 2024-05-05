@@ -57,7 +57,7 @@ public class CartActivity extends AppCompatActivity implements ManagementCart.Ca
     private FirebaseHelper firebaseHelper;
     private NestedScrollView scrollView;
     private ConstraintLayout orderbtn, profileIcon;
-    private ArrayList<CafeItem> orderlist = new ArrayList<>(); // Новый список для ресторанов
+    private ArrayList<CafeItem> orderlist = new ArrayList<>();
     private List<Integer> cafe_ids = new ArrayList<>();
 
     private int userIdFromFirstRequest;
@@ -78,50 +78,11 @@ public class CartActivity extends AppCompatActivity implements ManagementCart.Ca
         fetchRestaurantsFromServer();
     }
 
-//    private void executeGetRequest2(String email) {
-//        String token = getIntent().getStringExtra("access_token");
-//        RequestQueue queue = Volley.newRequestQueue(this);
-//        String url = "https://losermaru.pythonanywhere.com/user/" + email;
-//        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
-//                new Response.Listener<JSONObject>() {
-//                    @Override
-//                    public void onResponse(JSONObject response) {
-//                        try {
-//                            userIdFromFirstRequest = response.getInt("id"); // Сохраняем userId из первого запроса
-//                            System.out.println("111111 " + userIdFromFirstRequest);
-//                            executeGetRequest(); // Запускаем второй запрос после получения userId
-//                        } catch (JSONException e) {
-//                            throw new RuntimeException(e);
-//                        }
-//
-//                        // Обработка успешного ответа от сервера
-//                    }
-//
-//                },
-//                new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        // Обработка ошибки запроса первого запроса
-//                        handleErrorResponse(error);
-//                    }
-//                }) {
-//            @Override
-//            public Map<String, String> getHeaders() throws AuthFailureError {
-//                Map<String, String> headers = new HashMap<>();
-//                headers.put("Authorization", "Bearer " + token);
-//                return headers;
-//            }
-//        };
-//
-//        queue.add(request);
-//    }
-
 
     private void executeGetRequest() {
         String token = getIntent().getStringExtra("access_token");
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = "https://losermaru.pythonanywhere.com/favorite/";
-
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {
                     @Override
@@ -154,19 +115,21 @@ public class CartActivity extends AppCompatActivity implements ManagementCart.Ca
             for (int i = 0; i < length; i++) {
                 JSONObject item = response.getJSONObject(i);
                 int favId = item.getInt("id");
-
                 int cafe_id = item.getInt("cafe_id");
+                Log.e("NEW_LOG_CART_ACTIVITY",favId + " " + cafe_id);
 
-                System.out.println(" fav                     " + favId);
+                    CafeItem cafeItem = new CafeItem();
+                    cafeItem.setFavId(favId);
+                    cafeItem.setId(cafe_id);
 
                     cafe_ids.add(cafe_id);
 
-                    CafeItem cafeItem = new CafeItem();
-                    System.out.println(" fav1                     " + favId);
-                    cafeItem.setFavId(favId);
-                    System.out.println("12222222322222 " +cafeItem.getFavId());
                     orderlist.add(cafeItem);
+                Log.d("CartActivity", "cafe_key: " + cafeItem.getId());
+            }
 
+            for (int cafeId : cafe_ids) {
+                Log.e("Cafe ID: " , String.valueOf(cafeId));
             }
             System.out.println("Restaurant IDs: " + cafe_ids);
         } catch (JSONException e) {
@@ -281,6 +244,7 @@ public class CartActivity extends AppCompatActivity implements ManagementCart.Ca
                 recyclerViewList = findViewById(R.id.view);
                 recyclerViewList.setLayoutManager(layoutManager);
                 priceAdapter = new CartListAdapter(CartActivity.this, email, token);
+                Log.e("TAG_CARTACTIVITY_TOKEN",token);
                 recyclerViewList.setAdapter(priceAdapter);
                 recyclerViewList.smoothScrollToPosition(100000);
                 recyclerViewList.setHasFixedSize(true);

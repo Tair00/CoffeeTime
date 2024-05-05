@@ -376,6 +376,7 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
     }
 
     private void setCoffeeRecycler(ArrayList<CoffeeDomain> table) {
+        Log.e("LOG_COFFEE", "------");
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 2);
         coffeeRecycler = findViewById(R.id.table_recycler);
         coffeeRecycler.setLayoutManager(layoutManager);
@@ -435,6 +436,7 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
 
 
     private void executeGetRequest() {
+        Log.e("TAG_LOG_SDA", token);
         RequestQueue queue = Volley.newRequestQueue(this);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, serverUrl,
                 new Response.Listener<String>() {
@@ -480,13 +482,14 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
                 String title = jsonObject.getString("name");
                 String seat = jsonObject.getString("description");
                 String image = jsonObject.getString("image");
-
                 JSONObject cafeObject = jsonObject.getJSONObject("cafe");
-
                 String cafeName = cafeObject.getString("name");
                 String restId = cafeObject.getString("id");
+                Log.e("coffeeList",id+" "+ title+" " +" "+ seat+" "+ restId +" "+ image+" " + cafeName);
+                Log.e("coffeeListEquals", String.valueOf(cafe_id) + " " + restId);
                 if (restId.equals(String.valueOf(cafe_id))) {
                     coffeeList.add(new CoffeeDomain(id, title, seat, restId, image, cafeName));
+                    Log.e("coffeeList2",id+ title+ seat+ restId+ image + cafeName);
                 }
             }
             coffeeAdapter.notifyDataSetChanged();

@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,7 +43,7 @@ import java.util.Map;
 
 public class CartListAdapter extends RecyclerView.Adapter<CartListViewHolder> {
     private Context context;
-
+    private Integer cafe_id;
     private ArrayList<CafeItem> products;
     private String email, token;
     private Integer restorantId;
@@ -93,11 +94,15 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListViewHolder> {
                 ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation((Activity) context,
                         new Pair<View, String>(holder.productImage, "productImage"));
                 restorantId = product.getId();
+                cafe_id = product.getId();
+                Log.e("rest_id", String.valueOf(restorantId));
                 Intent intent = new Intent(holder.itemView.getContext(), ShowDetailActivity.class);
                 intent.putExtra("email", email);
                 intent.putExtra("access_token", token);
+                Log.e("TAG_TOKEN_LOG",token);
                 intent.putExtra("object", product);
                 intent.putExtra("restorantId", restorantId);
+                intent.putExtra("cafe_id",cafe_id);
 
                 holder.itemView.getContext().startActivity(intent, options.toBundle());
             }
@@ -152,17 +157,21 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListViewHolder> {
                             for (int i = 0; i < response.length(); i++) {
                                 JSONObject cafeObject = response.getJSONObject(i);
                                 int fetchedCafeId = cafeObject.getInt("cafe_id");
+
                                 int favId = cafeObject.getInt("id");
                                 System.out.println("1232222" + fetchedCafeId);
                                 System.out.println("1232223" + cafeId);
+                                Log.e("TAG_CAFE_DESC","Cafe ID: " + fetchedCafeId + ", Fav ID: " + favId);
                                 if (fetchedCafeId == cafeId) {
+
                                     // cafe_id совпадает с заданным значением
-                                    System.out.println("Cafe ID: " + fetchedCafeId + ", Fav ID: " + favId);
+
+
                                     // Далее можно использовать полученный fav_id
                                     executeDeleteRequest(favId);
                                     return;
                                 }else {
-                                    System.out.println("Поплачь");
+                                   Log.e("TAG_ПОплач","ПОПЛАЧ");
                                 }
                             }
                         } catch (JSONException e) {

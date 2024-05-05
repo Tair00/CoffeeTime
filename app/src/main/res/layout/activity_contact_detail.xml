@@ -79,14 +79,7 @@
                 android:layout_marginTop="15dp"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/descriptionTxt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:text="Description"
-                    android:textColor="@color/white"
-                    android:textSize="20sp" />
+
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/outlinedTextField"

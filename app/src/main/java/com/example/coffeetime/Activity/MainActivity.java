@@ -203,7 +203,7 @@ public class MainActivity extends AppCompatActivity {
                     if (restaurants != null) {
                         Log.d("MainActivity", "Received " + restaurants.size() + " restaurants from server.");
                         for (CafeItem cafe : restaurants) {
-                            Log.d("MainActivity", "cafe_key: " + cafe.getCafe_key());
+                            Log.d("MainActivity", "cafe_key: " + cafe.getId());
                         }
                         Collections.sort(restaurants, new Comparator<CafeItem>() {
                             @Override
