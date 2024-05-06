@@ -2,6 +2,7 @@ package com.example.coffeetime.Activity;
 
 import android.app.Activity;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -121,6 +122,7 @@ public class ContactDetailActivity extends Activity {
                 if (response.isSuccessful()) {
                     // Обработка успешного ответа
                     Toast.makeText(ContactDetailActivity.this, "Подписка успешно оформлена", Toast.LENGTH_SHORT).show();
+
                 } else {
                     // Обработка неуспешного ответа
                     Log.e("ContactDetailActivity", "Ошибка: " + response.code());

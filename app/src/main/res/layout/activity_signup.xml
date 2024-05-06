@@ -83,7 +83,7 @@
         android:background="@drawable/text_back"
         android:drawableStart="@drawable/login_icon"
         android:ems="10"
-        android:hint="  Email или имя пользователя"
+        android:hint="  Email "
         android:inputType="textEmailAddress"
         android:paddingLeft="15dp"
         android:textColorHint="@color/white"

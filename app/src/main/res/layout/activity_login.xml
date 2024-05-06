@@ -11,12 +11,13 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
+        android:layout_marginLeft="10dp"
         android:layout_marginTop="104dp"
         android:text="Добро пожаловать"
         android:textColor="@color/white"
         android:textSize="32dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.403"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -24,17 +25,17 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
-
+        android:layout_marginLeft="10dp"
         android:layout_marginTop="40dp"
-        android:text="Если у вас нет аккаунта"
+        android:text="Авторизуйтесь или \nзарегистрируйтесь для продолжения"
         android:textColor="@color/white"
         android:textSize="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/nameEdit"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.257"
+        app:layout_constraintHorizontal_bias="0.294"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textView"
-        app:layout_constraintVertical_chainStyle="spread_inside" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/signUp"
@@ -42,19 +43,19 @@
         android:layout_height="wrap_content"
 
 
-        android:layout_marginTop="4dp"
-        android:text="@string/colored_text"
-        android:textColor="@color/white"
+        android:text="У вас нет аккаунта? Создайте его"
+        android:textColor="#FFD17842"
         android:textSize="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textView2" />
+        app:layout_constraintTop_toBottomOf="@+id/login" />
 
     <EditText
         android:id="@+id/nameEdit"
         android:layout_width="0dp"
         android:layout_height="54dp"
-        android:layout_marginTop="92dp"
+        android:layout_marginTop="172dp"
         android:background="@drawable/text_back"
         android:drawableStart="@drawable/login_icon"
         android:ems="15"
@@ -65,7 +66,7 @@
         android:textColorHint="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signUp"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
         app:layout_constraintWidth_default="wrap"
         app:layout_constraintWidth_max="311dp" />
 

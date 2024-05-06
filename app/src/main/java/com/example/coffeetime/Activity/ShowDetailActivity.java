@@ -535,7 +535,7 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
                             Log.e("TAG_TIME",selectedDate +"T" + selectedTime + ":00" );
                             jsonBody.put("pick_up_time", formattedTime);
                             jsonBody.put("smartphone_key", Mytoken); // замените на ваш ключ
-                            sendNotification(object.getCafe_key(),"У вас новый клиент",coffeeName,"show_message",cafeName);
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -544,6 +544,7 @@ public class ShowDetailActivity extends AppCompatActivity implements CartListene
                                     @Override
                                     public void onResponse(JSONObject response) {
                                         // Обработка успешного ответа
+                                        sendNotification(object.getCafe_key(),"У вас новый клиент",coffeeName,"show_message",cafeName);
                                         Toast.makeText(ShowDetailActivity.this, "Ожидайте ответа ", Toast.LENGTH_SHORT).show();
                                     }
                                 },
