@@ -2,8 +2,11 @@ package com.example.coffeetime.Activity;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -154,8 +157,45 @@ public class CartActivity extends AppCompatActivity implements ManagementCart.Ca
         }
     }
 
-    protected void bottomNavigation() {
-        // Добавьте свою логику для нижней навигации
+    private void bottomNavigation() {
+        LinearLayout profileBtn = findViewById(R.id.profileBtn);
+        LinearLayout homeBtn = findViewById(R.id.homeBtn);
+        LinearLayout cartBtn = findViewById(R.id.cartBtn);
+        LinearLayout setting = findViewById(R.id.setting);
+        setting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CartActivity.this, ReservationActivity.class);
+                String  token = getIntent().getStringExtra("access_token");
+                String email = getIntent().getStringExtra("email");
+                intent.putExtra("email", email);
+                intent.putExtra("access_token", token);
+                startActivity(intent);
+            }
+        });
+        profileBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent1 = new Intent(CartActivity.this, BookingListActivity.class);
+                String  token = getIntent().getStringExtra("access_token");
+                String email = getIntent().getStringExtra("email");
+                intent1.putExtra("email", email);
+                intent1.putExtra("access_token", token);
+                startActivity(intent1);
+            }
+        });
+        homeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CartActivity.this, MainActivity.class);
+                String  token = getIntent().getStringExtra("access_token");
+                String email = getIntent().getStringExtra("email");
+                intent.putExtra("email", email);
+                intent.putExtra("access_token", token);
+                startActivity(intent);
+            }
+        });
+
     }
 
     protected void calculateCart() {
