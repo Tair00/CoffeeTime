@@ -14,23 +14,31 @@
     android:elevation="3dp">
     <!--    xmlns:tools="http://schemas.android.com/tools"-->
 
-    <ImageView
-        android:id="@+id/coffee_cart"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <androidx.cardview.widget.CardView
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="15dp"
         android:layout_marginRight="10dp"
         android:layout_marginBottom="85dp"
-        android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
-        android:transitionName="productImage"
+        app:cardCornerRadius="12dp"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintTop_toTopOf="parent">
+
+    <ImageView
+        android:id="@+id/coffee_cart"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/rounded_corners"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:transitionName="productImage"
         app:srcCompat="@drawable/coffee" />
+</androidx.cardview.widget.CardView>
+
 
     <TextView
         android:id="@+id/name"
